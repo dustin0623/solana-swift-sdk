@@ -174,6 +174,6 @@ describe("swap.build", () => {
     const wire = r.transaction.serialize();
     expect(typeof wire).toBe("string");
     expect(Buffer.from(wire, "base64")[0]).toBe(2); // two signature slots
-    expect(r.recipientCheck ?? r.accounts.recipient).toBe(OWNER);
+    expect(r.accounts.recipient).toBe(OWNER);
   });
 });
