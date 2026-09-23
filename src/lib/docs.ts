@@ -115,6 +115,38 @@ export const DOCS: DocSection[] = [
     ],
   },
   {
+    slug: "token-infrastructure",
+    title: "Token Infrastructure",
+    group: "Domain APIs",
+    summary: "Read any SPL or Token-2022 token, wherever it was created.",
+    blocks: [
+      { text: "The token layer works with arbitrary tokens on Solana — from any launchpad, DEX or custom program. It reads standard RPC state and never assumes a token came from SolanaXPH." },
+      { code: `// Mint facts + which program owns it
+const token = await sdk.tokens.get(mint);
+token.mint.decimals; token.mint.supply.ui;
+token.mint.program; // "spl-token" | "spl-token-2022"
+
+// Exact balance across every token account the wallet holds
+const bal = await sdk.tokens.balance({ owner, mint });
+bal.amount.raw; bal.amount.ui; bal.accounts;
+
+// Native SOL (never confused with an SPL mint)
+const sol = await sdk.tokens.balance({ owner, mint: NATIVE_SOL });
+
+// All token accounts of a wallet, SPL Token and Token-2022
+const accounts = await sdk.tokens.accounts({ owner, nonZero: true });
+
+const supply = await sdk.tokens.supply(mint);` },
+      { text: "Metadata separates on-chain facts from off-chain claims. On-chain metadata comes from the Metaplex metadata account (or the Token-2022 metadata extension). Off-chain JSON is only fetched when you opt in, and is validated: bad JSON, unreachable hosts and non-web links are reported, never thrown." },
+      { code: `const meta = await sdk.tokens.metadata(mint, { offChain: true });
+meta.onChain;  // name, symbol, uri, creators — what the chain stores
+meta.offChain; // { status: "ok" | "skipped" | "unavailable" | "invalid", image, ... }
+meta.warnings; // non-fatal problems` },
+      { note: "Wrapped SOL is a normal SPL mint (So111…11112). Use NATIVE_SOL for native SOL balances — \"SOL\" is not a valid address, so the two can never be mixed up." },
+      { text: "Token-2022 extensions are reported exactly as the node decodes them; the SDK does not interpret transfer fees or other rules yet, and says so rather than pretending." },
+    ],
+  },
+  {
     slug: "nfts",
     title: "NFTs",
     group: "Domain APIs",
