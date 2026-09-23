@@ -3,7 +3,7 @@ import { createDemoTradingEnv, DEMO_SWAP_PROGRAM } from "./tradingFixtures.js";
 import { MAINNET_USDC_MINT } from "../swap/SwapClient.js";
 import { WRAPPED_SOL_MINT } from "../types/token.js";
 import { UnsupportedOperationError, ValidationError } from "../errors/index.js";
-import { decodeU64LE } from "../utils/bytes.js";
+const decodeU64LE = (d: Uint8Array, o: number): bigint => new DataView(d.buffer, d.byteOffset).getBigUint64(o, true);
 
 describe("Phase 7 trading integration", () => {
   it("discover → get token → find pools → quote → build → simulate", async () => {
