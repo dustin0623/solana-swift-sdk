@@ -3,7 +3,7 @@ export interface DocSection {
   title: string;
   group: "Getting started" | "Core Solana" | "Domain APIs" | "Signing & streaming" | "Providers" | "Reference";
   summary: string;
-  blocks: Array<{ text?: string; code?: string; note?: string }>;
+  blocks: Array<{ title?: string; text?: string; code?: string; note?: string }>;
 }
 
 export const DOCS: DocSection[] = [
