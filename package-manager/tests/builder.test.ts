@@ -40,7 +40,7 @@ describe("TransactionBuilder", () => {
   });
 
   it("can add custom instructions", async () => {
-    const provider = new MockRpcRpcProvider({});
+    const provider = new MockRpcProvider({});
     const rpc = new RpcClient({ provider });
     const memo = InstructionBuilder.memo("hello");
     const tx = await new TransactionBuilder(rpc)
