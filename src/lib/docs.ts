@@ -1,7 +1,7 @@
 export interface DocSection {
   slug: string;
   title: string;
-  group: "Getting started" | "Core Solana" | "Domain APIs" | "Signing & streaming" | "Providers" | "Reference";
+  group: "Getting started" | "Configuration" | "Core Solana" | "Domain APIs" | "Signing & streaming" | "Providers" | "Reference";
   summary: string;
   blocks: Array<{ title?: string; text?: string; code?: string; note?: string }>;
 }
@@ -47,6 +47,32 @@ export const DOCS: DocSection[] = [
     blocks: [
       { text: "SolanaClient wires one RpcClient into every module. Modules never talk to a vendor directly." },
       { code: `solana.rpc       // typed RPC + raw request()\nsolana.reader    // balance, account, transaction, block, slot\nsolana.parser    // parse raw getTransaction payloads offline\nsolana.builder   // instructions -> transaction -> simulate -> send\nsolana.payments  // sol, spl, validate\nsolana.tokens    // mints, balances, transfer, mint, burn\nsolana.nft       // inspect + transfer NFT tokens\nsolana.programs  // PDAs, program accounts, custom instructions\nsolana.wallet    // signer factories\nsolana.blocks    // block reader shortcut\nsolana.stream    // websocket StreamEngine` },
+    ],
+  },
+  {
+    slug: "configuration",
+    title: "Configuration",
+    group: "Configuration",
+    summary: "One SolanaClient, one options object: network, RPC, commitment, provider.",
+    blocks: [
+      { title: "One client, one config", code: `import { SolanaClient } from "solanaxph-sdk";\n\nconst solana = new SolanaClient({\n  network: "devnet",               // mainnet | devnet | testnet | localnet (default mainnet)\n  rpc: {\n    url: process.env.SOLANA_RPC_URL, // any JSON-RPC endpoint; overrides the network URL\n    wsUrl: undefined,               // derived from url when omitted\n    name: "my-node",                // label used in errors\n    headers: {},                    // extra HTTP headers\n  },\n  defaultCommitment: "confirmed",   // processed | confirmed | finalized\n});` },
+      { title: "Options", text: "network picks a default public endpoint. rpc.url replaces it with any node (your own, Helius, QuickNode, Alchemy). defaultCommitment applies to reads and broadcasts unless a call overrides it. provider injects a pre-built SolanaRpcProvider and takes precedence over rpc." },
+      { title: "Environment variables", text: "The SDK never reads environment variables itself. Pass values in explicitly, and keep URLs that embed API keys on the server." },
+      { title: "Multiple instances", code: `const mainnet = new SolanaClient({ network: "mainnet", rpc: { url: process.env.MAINNET_RPC } });\nconst devnet = new SolanaClient({ network: "devnet" });` },
+      { note: "There is no global state or environment switching: create one client per network or endpoint." },
+    ],
+  },
+  {
+    slug: "providers",
+    title: "Providers",
+    group: "Configuration",
+    summary: "RPC, discovery, pool and swap providers — how they plug in.",
+    blocks: [
+      { title: "RPC provider", text: "Every client talks to the chain through one SolanaRpcProvider. By default an HTTP provider is built from network or rpc.url. Inject your own with the provider option:" },
+      { code: `import { HeliusRpcProvider } from "solanaxph-sdk/helius";\n\nconst solana = new SolanaClient({\n  network: "mainnet",\n  provider: new HeliusRpcProvider({ url: process.env.HELIUS_RPC_URL! }),\n});` },
+      { title: "Data providers", text: "Token discovery, pools and swap quotes use registered providers. Nothing is fabricated: if no provider supports an operation, the SDK throws rather than inventing data." },
+      { code: `import { StaticTokenListProvider, StaticPoolProvider, PoolQuoteProvider } from "solanaxph-sdk";\n\nsolana.tokens.discovery.register(new StaticTokenListProvider(tokens), { default: true });\nsolana.pools.register(new StaticPoolProvider(pools));\nsolana.swap.register(new PoolQuoteProvider(solana.pools));\n\n// remove by name\nsolana.pools.unregister("static");` },
+      { title: "Built-in providers", text: "RpcTokenDiscoveryProvider (on-chain mint lookups), StaticTokenListProvider, StaticPoolProvider, PoolQuoteProvider (constant-product quotes over registered pools) and the optional HeliusRpcProvider. No DEX or indexer provider is bundled — register your own implementation of TokenDiscoveryProvider, PoolProvider or SwapQuoteProvider." },
     ],
   },
   {
