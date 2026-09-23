@@ -34,8 +34,8 @@ describe("TransactionBuilder", () => {
     const provider = new MockRpcProvider({});
     const rpc = new RpcClient({ provider });
     await expect(
-      new TransactionBuilder(rpc).transfer({ to: bob, lamports: 100n }).withBlockhash(blockhash).build(),
-    ).rejects.toThrow("A fee payer");
+      new TransactionBuilder(rpc).withBlockhash(blockhash).build(),
+    ).rejects.toThrow("A fee payer is required");
   });
 
   it("can add custom instructions", async () => {
