@@ -3,7 +3,15 @@ import { MockRpcProvider } from "../rpc/MockRpcProvider.js";
 import { RpcClient } from "../rpc/RpcClient.js";
 import { ReaderClient } from "../reader/ReaderClient.js";
 import { PaymentValidator } from "../payments/PaymentValidator.js";
-import { successfulSolTransfer, SOL_TRANSFER_SIGNATURE, splTransfer, SPL_TRANSFER_SIGNATURE } from "./fixtures.js";
+import {
+  alice,
+  bob,
+  mint,
+  successfulSolTransfer,
+  SOL_TRANSFER_SIGNATURE,
+  splTransfer,
+  SPL_TRANSFER_SIGNATURE,
+} from "./fixtures.js";
 import { MintClient } from "../tokens/MintClient.js";
 
 describe("PaymentValidator", () => {
@@ -29,8 +37,8 @@ describe("PaymentValidator", () => {
     const result = await validator.validate({
       signature: SOL_TRANSFER_SIGNATURE,
       expected: {
-        from: "AlicePubkey111111111111111111111111111111111",
-        to: "BobPubkey111111111111111111111111111111111111",
+        from: alice,
+        to: bob,
         amount: "0.000005",
       },
     });
@@ -55,7 +63,7 @@ describe("PaymentValidator", () => {
     const result = await validator.validate({
       signature: SOL_TRANSFER_SIGNATURE,
       expected: {
-        to: "BobPubkey111111111111111111111111111111111111",
+        to: bob,
         amount: "999999",
       },
     });
@@ -82,6 +90,7 @@ describe("PaymentValidator", () => {
         },
       },
     });
+
     const rpc = new RpcClient({ provider, defaultCommitment: "finalized" });
     const reader = new ReaderClient(rpc);
     const validator = new PaymentValidator(reader.transactions, new MintClient(rpc));
