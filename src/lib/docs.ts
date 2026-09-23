@@ -67,7 +67,7 @@ export const DOCS: DocSection[] = [
     summary: "mainnet, devnet, testnet, localnet and custom URLs.",
     blocks: [
       { code: `new SolanaClient({ network: "devnet" });\nnew SolanaClient({ network: "mainnet", rpc: { url: process.env.SOLANA_RPC_URL } });\nnew SolanaClient({ network: "localnet" }); // http://127.0.0.1:8899` },
-      { text: "Commitment is explicit: set defaultCommitment (\"processed\" | \"confirmed\" | \"finalized\", default \"confirmed\") and override per call where correctness depends on it." },
+      { text: "Omitting network defaults to mainnet — always set it explicitly in examples and tests. Commitment is explicit: set defaultCommitment (\"processed\" | \"confirmed\" | \"finalized\", default \"confirmed\") and override per call where correctness depends on it." },
     ],
   },
   {

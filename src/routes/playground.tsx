@@ -232,10 +232,10 @@ function PdaCard() {
   const [seed, setSeed] = useState("vault");
   const r = useRunner();
   return (
-    <Card title="Derive a PDA" code={`findProgramAddress(["vault"], programId); // { address, bump }`}>
+    <Card title="Derive a PDA" code={`findProgramAddress(["vault"], TOKEN_PROGRAM_ID); // { address, bump }`}>
       <div className="flex gap-2">
         <input className={input} value={seed} onChange={(e) => setSeed(e.target.value)} aria-label="Seed" />
-        <button className={btn} onClick={() => void r.run(() => findProgramAddress([seed], mint))}>Derive</button>
+        <button className={btn} onClick={() => void r.run(() => findProgramAddress([seed], TOKEN_PROGRAM_ID))}>Derive</button>
       </div>
       <Status {...r} />
     </Card>

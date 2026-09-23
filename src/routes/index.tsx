@@ -60,7 +60,7 @@ console.log(balance.sol);
 const tx = await solana.payments.sol
   .transfer({ from: sender.address, to: recipient, amount: "0.1" })
   .signWith(sender)
-  .sendAndConfirm({ signers: [sender] });`}
+  .sendAndConfirm({ commitment: "confirmed" });`}
           </pre>
 
           <h2>Architecture</h2>
