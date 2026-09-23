@@ -63,7 +63,7 @@ export class SolanaClient {
       (options.rpc?.url
         ? new HttpRpcProvider({
             url: options.rpc.url,
-            name: options.rpc.name,
+            name: options.rpc.name ?? network,
             headers: options.rpc.headers,
           })
         : new HttpRpcProvider({ url: endpointsFor(network).http, name: network }));

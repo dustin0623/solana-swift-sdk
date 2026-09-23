@@ -87,9 +87,9 @@ function Playground() {
   );
 
   const [balance, setBalance] = useState<string | null>(null);
-  const [tx, setTx] = useState<unknown>(null);
+  const [tx, setTx] = useState<Record<string, unknown> | null>(null);
   const [pda, setPda] = useState<string | null>(null);
-  const [paymentResult, setPaymentResult] = useState<unknown>(null);
+  const [paymentResult, setPaymentResult] = useState<Record<string, unknown> | null>(null);
 
   return (
     <DocShell>

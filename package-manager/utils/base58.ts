@@ -36,13 +36,15 @@ export function base58Encode(bytes: Uint8Array): string {
     leadingZeros += 1;
   }
 
+  const one = ALPHABET.charAt(0);
+
   // All-zero input encodes as one '1' per zero byte and nothing else.
   if (digits.length === 0) {
-    return ALPHABET[0].repeat(leadingZeros || 1);
+    return one.repeat(leadingZeros || 1);
   }
 
-  let out = ALPHABET[0].repeat(leadingZeros);
-  for (let i = digits.length - 1; i >= 0; i -= 1) out += ALPHABET[digits[i] as number];
+  let out = one.repeat(leadingZeros);
+  for (let i = digits.length - 1; i >= 0; i -= 1) out += ALPHABET.charAt(digits[i] as number);
   return out;
 }
 
