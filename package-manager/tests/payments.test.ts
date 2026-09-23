@@ -98,8 +98,8 @@ describe("PaymentValidator", () => {
     const result = await validator.validate({
       signature: SPL_TRANSFER_SIGNATURE,
       expected: {
-        mint: "MintPubkey111111111111111111111111111111111",
-        to: "BobPubkey111111111111111111111111111111111111",
+        mint,
+        to: bob,
         amount: "100",
       },
     });
