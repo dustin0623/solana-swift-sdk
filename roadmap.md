@@ -16,3 +16,4 @@
 - [x] Phase 2 (token discovery): provider abstraction, rpc + static providers, cursor pagination, capabilities, tests (85 passing), docs
 - [x] Phase 3 (pool discovery): PoolProvider abstraction, normalized LiquidityPool, find/get/rank/verify, static provider, tests (118 passing), docs
 - [x] Phase 4: quote engine (sdk.swap.quote, quote-only, no execution)
+- [x] Phase 5: swap transaction builder (sdk.swap.build, unsigned only)

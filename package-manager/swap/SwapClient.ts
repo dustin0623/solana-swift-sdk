@@ -6,7 +6,17 @@ import type { Address } from "../types/index.js";
 import { WRAPPED_SOL_MINT } from "../types/token.js";
 import { isValidAddress } from "../utils/address.js";
 import { assertBps } from "./math.js";
-import type { SwapQuote, SwapQuoteParams, SwapQuoteProvider, SwapTokenInput } from "./types.js";
+import type { BuilderClient } from "../builder/BuilderClient.js";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import { SwapTransactionBuilder, assertQuoteShape, isSwapProvider } from "./SwapTransactionBuilder.js";
+import type {
+  SwapBuildParams,
+  SwapBuildResult,
+  SwapQuote,
+  SwapQuoteParams,
+  SwapQuoteProvider,
+  SwapTokenInput,
+} from "./types.js";
 
 export const MAINNET_USDC_MINT: Address = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 
@@ -17,6 +27,9 @@ export interface SwapClientOptions {
   maxSlippageBps?: number;
   defaultSlippageBps?: number;
   now?: () => number;
+  /** Required for build(). Supplied automatically by SolanaClient. */
+  rpc?: RpcClient;
+  builder?: BuilderClient;
 }
 
 export class SwapClient {
@@ -25,12 +38,14 @@ export class SwapClient {
   private readonly maxSlippageBps: number;
   private readonly defaultSlippageBps: number;
   private readonly now: () => number;
+  private readonly txBuilder: SwapTransactionBuilder | null;
 
   constructor(providers: readonly SwapQuoteProvider[] = [], options: SwapClientOptions = {}) {
     this.usdcMint = options.usdcMint ?? MAINNET_USDC_MINT;
     this.maxSlippageBps = options.maxSlippageBps ?? 1_000;
     this.defaultSlippageBps = options.defaultSlippageBps ?? 50;
     this.now = options.now ?? Date.now;
+    this.txBuilder = options.rpc && options.builder ? new SwapTransactionBuilder(options.rpc, options.builder) : null;
     for (const p of providers) this.register(p);
   }
 
@@ -110,6 +125,27 @@ export class SwapClient {
   /** Throws when the quote has expired and must be refreshed. */
   public assertFresh(quote: SwapQuote): void {
     if (this.isExpired(quote)) throw new ValidationError("quote has expired; request a new one", "quote");
+  }
+
+  /**
+   * Builds an UNSIGNED swap transaction from a quote. Never signs or
+   * broadcasts. Validates freshness, amounts, mints, accounts, slippage,
+   * balances and pool availability first.
+   */
+  public async build(params: SwapBuildParams): Promise<SwapBuildResult> {
+    if (!this.txBuilder) throw new UnsupportedOperationError("swap.build() needs an RPC client; use it via SolanaClient.");
+    const quote = params.quote;
+    assertQuoteShape(quote);
+    this.assertFresh(quote);
+    if (quote.slippageBps > this.maxSlippageBps) {
+      throw new ValidationError(`quote slippage ${quote.slippageBps} bps exceeds max ${this.maxSlippageBps}`, "slippageBps");
+    }
+    const provider = this.providers.get(quote.provider);
+    if (!provider) throw new ValidationError(`quote provider "${quote.provider}" is not registered`, "quote");
+    if (!isSwapProvider(provider)) {
+      throw new UnsupportedOperationError(`Provider "${provider.name}" can quote but cannot build swap transactions.`);
+    }
+    return this.txBuilder.build(provider, params);
   }
 
   private resolveProvider(name: string): SwapQuoteProvider {

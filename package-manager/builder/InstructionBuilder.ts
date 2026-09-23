@@ -24,7 +24,7 @@ const TOKEN_IX = {
   burnChecked: 15,
 } as const;
 
-type TokenProgram = typeof TOKEN_PROGRAM_ID | typeof TOKEN_2022_PROGRAM_ID;
+export type TokenProgramId = typeof TOKEN_PROGRAM_ID | typeof TOKEN_2022_PROGRAM_ID;
 
 /**
  * Builds single instructions.
@@ -61,7 +61,7 @@ export class InstructionBuilder {
     authority: Address;
     amount: bigint;
     decimals: number;
-    programId?: TokenProgram;
+    programId?: TokenProgramId;
   }): Instruction {
     if (options.amount <= 0n) {
       throw new ValidationError("Transfer amount must be greater than zero", "amount");
@@ -91,7 +91,7 @@ export class InstructionBuilder {
     destination: Address;
     authority: Address;
     amount: bigint;
-    programId?: TokenProgram;
+    programId?: TokenProgramId;
   }): Instruction {
     return {
       programId: options.programId ?? TOKEN_PROGRAM_ID,
@@ -113,7 +113,7 @@ export class InstructionBuilder {
     mint: Address;
     authority: Address;
     amount: bigint;
-    programId?: TokenProgram;
+    programId?: TokenProgramId;
   }): Instruction {
     return {
       programId: options.programId ?? TOKEN_PROGRAM_ID,
@@ -126,12 +126,39 @@ export class InstructionBuilder {
     };
   }
 
+  /** SPL Token SyncNative: updates a wrapped-SOL account's amount after a lamport transfer. */
+  public static syncNative(account: Address, programId: Address = TOKEN_PROGRAM_ID): Instruction {
+    return {
+      programId,
+      keys: [{ address: assertAddress(account, "account"), isSigner: false, isWritable: true }],
+      data: Uint8Array.of(17),
+    };
+  }
+
+  /** SPL Token CloseAccount: closes a token account, sending its lamports to `destination`. */
+  public static closeTokenAccount(options: {
+    account: Address;
+    destination: Address;
+    owner: Address;
+    programId?: Address;
+  }): Instruction {
+    return {
+      programId: options.programId ?? TOKEN_PROGRAM_ID,
+      keys: [
+        { address: assertAddress(options.account, "account"), isSigner: false, isWritable: true },
+        { address: assertAddress(options.destination, "destination"), isSigner: false, isWritable: true },
+        { address: assertAddress(options.owner, "owner"), isSigner: true, isWritable: false },
+      ],
+      data: Uint8Array.of(9),
+    };
+  }
+
   /** Creates an associated token account; idempotent variant by default. */
   public static createAssociatedTokenAccount(options: {
     payer: Address;
     owner: Address;
     mint: Address;
-    programId?: TokenProgram;
+    programId?: TokenProgramId;
     idempotent?: boolean;
   }): Instruction {
     const tokenProgram = options.programId ?? TOKEN_PROGRAM_ID;
@@ -158,7 +185,7 @@ export class InstructionBuilder {
   public static associatedTokenAddress(
     owner: Address,
     mint: Address,
-    tokenProgram: TokenProgram = TOKEN_PROGRAM_ID,
+    tokenProgram: TokenProgramId = TOKEN_PROGRAM_ID,
   ): Address {
     return findProgramAddress(
       [
