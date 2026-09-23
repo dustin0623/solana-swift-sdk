@@ -152,7 +152,14 @@ export class SwapTransactionBuilder {
 
     const tx = this.builder.create().add(...instructions).feePayer(feePayer);
     if (params.version !== undefined) tx.withVersion(params.version);
-    const transaction = await tx.build(params.recentBlockhash ? { recentBlockhash: params.recentBlockhash } : {});
+    let recentBlockhash = params.recentBlockhash;
+    let lastValidBlockHeight: number | null = params.lastValidBlockHeight ?? null;
+    if (!recentBlockhash) {
+      const latest = await this.rpc.getLatestBlockhash();
+      recentBlockhash = latest.value.blockhash;
+      lastValidBlockHeight = latest.value.lastValidBlockHeight;
+    }
+    const transaction = await tx.build({ recentBlockhash });
     const m = transaction.message;
     const requiredSigners = m.accountKeys.slice(0, m.numRequiredSignatures);
 
@@ -176,7 +183,7 @@ export class SwapTransactionBuilder {
     }
 
     return {
-      transaction, instructions, quote, requiredSigners,
+      transaction, instructions, quote, requiredSigners, lastValidBlockHeight,
       estimatedFees: { networkFeeLamports, priorityFeeLamports, rentLamports, wrappedSolLamports, totalSolRequired },
       accounts: { source, destination, recipient, created },
       warnings,

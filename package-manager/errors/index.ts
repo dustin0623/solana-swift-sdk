@@ -15,7 +15,8 @@ export type SolanaSdkErrorCode =
   | "CONFIGURATION_ERROR"
   | "PROVIDER_ERROR"
   | "SUBSCRIPTION_ERROR"
-  | "UNSUPPORTED_OPERATION";
+  | "UNSUPPORTED_OPERATION"
+  | "SWAP_EXECUTION_ERROR";
 
 export class SolanaSdkError extends Error {
   public readonly code: SolanaSdkErrorCode;
@@ -120,5 +121,49 @@ export class SubscriptionError extends SolanaSdkError {
 export class UnsupportedOperationError extends SolanaSdkError {
   constructor(message: string) {
     super("UNSUPPORTED_OPERATION", message);
+  }
+}
+
+/** Why a swap execution step failed. */
+export type SwapFailureReason =
+  | "quote_expired"
+  | "signer_mismatch"
+  | "signing_failed"
+  | "simulation_failed"
+  | "insufficient_funds"
+  | "blockhash_expired"
+  | "slippage_exceeded"
+  | "rejected"
+  | "rpc_error"
+  | "timeout"
+  | "confirmation_failed";
+
+export type SwapExecutionStage = "validate" | "simulate" | "sign" | "send" | "confirm";
+
+/**
+ * Typed swap execution failure. The underlying Solana/RPC error is kept
+ * untouched in `cause`, with any program logs in `logs`.
+ */
+export class SwapExecutionError extends SolanaSdkError {
+  public readonly reason: SwapFailureReason;
+  public readonly stage: SwapExecutionStage;
+  public readonly signature: string | undefined;
+  public readonly logs: readonly string[];
+  public override readonly cause: unknown;
+
+  constructor(options: {
+    reason: SwapFailureReason;
+    stage: SwapExecutionStage;
+    message: string;
+    signature?: string | undefined;
+    logs?: readonly string[] | undefined;
+    cause?: unknown;
+  }) {
+    super("SWAP_EXECUTION_ERROR", options.message);
+    this.reason = options.reason;
+    this.stage = options.stage;
+    this.signature = options.signature;
+    this.logs = options.logs ?? [];
+    this.cause = options.cause;
   }
 }

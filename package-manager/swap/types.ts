@@ -131,6 +131,8 @@ export interface SwapBuildParams {
   /** Fee payer. Defaults to owner. */
   feePayer?: Address;
   recentBlockhash?: string;
+  /** Pair with recentBlockhash so confirmation can detect expiry. */
+  lastValidBlockHeight?: number;
   version?: import("../builder/types.js").TransactionVersion;
   /** Optional compute budget. */
   priorityFeeMicroLamports?: bigint;
@@ -161,6 +163,8 @@ export interface SwapBuildResult {
   instructions: import("../builder/types.js").Instruction[];
   quote: SwapQuote;
   requiredSigners: Address[];
+  /** Block height after which the blockhash expires; null when unknown. */
+  lastValidBlockHeight: number | null;
   estimatedFees: SwapEstimatedFees;
   accounts: {
     source: Address;
@@ -171,4 +175,40 @@ export interface SwapBuildResult {
   };
   /** Construction succeeding does not guarantee execution succeeds. */
   warnings: string[];
+}
+
+/* ── Phase 6: execution ────────────────────────────────────────────── */
+
+export interface SwapSimulation {
+  success: boolean;
+  /** Raw Solana error, untouched. Null on success. */
+  error: unknown;
+  logs: string[];
+  unitsConsumed: number | null;
+  returnData: unknown;
+  /** Classified failure, when the simulation failed. */
+  failureReason: import("../errors/index.js").SwapFailureReason | null;
+  raw: unknown;
+}
+
+export interface SwapExecuteOptions {
+  /** Signers for every required signer not already signed. Explicit only. */
+  signers: readonly import("../wallet/Signer.js").SolanaSigner[];
+  /** Target commitment. Default "confirmed". */
+  commitment?: import("../types/index.js").Commitment;
+  /** Simulate before signing. Default true. */
+  simulate?: boolean;
+  /** Skip node preflight on send. Default false. */
+  skipPreflight?: boolean;
+  timeoutMs?: number;
+  pollIntervalMs?: number;
+}
+
+export interface SwapExecutionResult {
+  signature: string;
+  confirmationStatus: import("../types/index.js").Commitment | null;
+  slot: number;
+  err: null;
+  simulation: SwapSimulation | null;
+  quote: SwapQuote;
 }
