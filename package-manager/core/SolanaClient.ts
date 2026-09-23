@@ -8,6 +8,7 @@ import { TokenClient } from "../tokens/TokenClient.js";
 import { MintClient } from "../tokens/MintClient.js";
 import { NftClient } from "../nft/NftClient.js";
 import { ProgramClient } from "../programs/ProgramClient.js";
+import { PoolClient } from "../pools/PoolClient.js";
 import { ParserClient } from "../parser/ParserClient.js";
 import { WalletClient } from "../wallet/WalletClient.js";
 import type { BlockReader } from "../reader/BlockReader.js";
