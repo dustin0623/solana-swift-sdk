@@ -25,7 +25,7 @@
     "noUncheckedSideEffectImports": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@solanaxph-sdk/*": ["./package-manager/*"]
+      "@solanaxph-sdk": ["./package-manager/index.ts"]
     }
   }
 }
