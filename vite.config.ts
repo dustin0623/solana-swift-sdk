@@ -15,9 +15,16 @@ export default defineConfig({
   },
   vite: {
     resolve: {
-      alias: {
-        "@solanaxph-sdk": resolve(__dirname, "./package-manager/index.ts"),
-      },
+      alias: [
+        {
+          find: /^@solanaxph-sdk$/,
+          replacement: resolve(__dirname, "./package-manager/index.ts"),
+        },
+        {
+          find: /^@solanaxph-sdk\/(.+)$/,
+          replacement: resolve(__dirname, "./package-manager/$1"),
+        },
+      ],
     },
   },
 });
