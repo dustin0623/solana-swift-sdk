@@ -271,3 +271,74 @@ export const allFixtures: Record<string, RpcTransaction> = {
   [INNER_IX_SIGNATURE]: transactionWithInnerInstructions,
   [VERSIONED_SIGNATURE]: versionedTransaction,
 };
+
+const TOKEN = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+const MEMO = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr";
+
+export const multipleTransfers: RpcTransaction = {
+  ...successfulSolTransfer,
+  transaction: {
+    signatures: ["multi".padEnd(87, "0")],
+    message: {
+      accountKeys: [
+        { pubkey: alice, signer: true, writable: true },
+        { pubkey: bob, signer: false, writable: true },
+        { pubkey: carol, signer: false, writable: true },
+        { pubkey: SYSTEM, signer: false, writable: false },
+      ],
+      instructions: [
+        { programId: SYSTEM, program: "system", parsed: { type: "transfer", info: { source: alice, destination: bob, lamports: 1000 } } },
+        { programId: SYSTEM, program: "system", parsed: { type: "transfer", info: { source: alice, destination: carol, lamports: 2000 } } },
+      ],
+      recentBlockhash: "blockhashmulti".padEnd(43, "0"),
+    },
+  },
+};
+
+export const programInvocation: RpcTransaction = {
+  ...successfulSolTransfer,
+  transaction: {
+    signatures: ["prog".padEnd(87, "0")],
+    message: {
+      accountKeys: [
+        { pubkey: alice, signer: true, writable: true },
+        { pubkey: MEMO, signer: false, writable: false },
+      ],
+      instructions: [{ programId: MEMO, program: "spl-memo", parsed: "order-42" }],
+      recentBlockhash: "blockhashprog".padEnd(43, "0"),
+    },
+  },
+  meta: {
+    ...successfulSolTransfer.meta!,
+    fee: 5000,
+    preBalances: [1000000, 1],
+    postBalances: [995000, 1],
+    logMessages: [
+      `Program ${MEMO} invoke [1]`,
+      'Program log: Memo (len 8): "order-42"',
+      `Program ${MEMO} success`,
+    ],
+  },
+};
+
+function tokenIx(type: string, info: Record<string, unknown>, sig: string): RpcTransaction {
+  return {
+    ...successfulSolTransfer,
+    transaction: {
+      signatures: [sig.padEnd(87, "0")],
+      message: {
+        accountKeys: [
+          { pubkey: alice, signer: true, writable: true },
+          { pubkey: aliceAta, signer: false, writable: true },
+          { pubkey: mint, signer: false, writable: true },
+          { pubkey: TOKEN, signer: false, writable: false },
+        ],
+        instructions: [{ programId: TOKEN, program: "spl-token", parsed: { type, info } }],
+        recentBlockhash: `blockhash${sig}`.padEnd(43, "0"),
+      },
+    },
+  };
+}
+
+export const tokenMint = tokenIx("mintTo", { mint, account: aliceAta, mintAuthority: alice, amount: "1000000" }, "mintto");
+export const tokenBurn = tokenIx("burn", { mint, account: aliceAta, authority: alice, amount: "500000" }, "burn");
