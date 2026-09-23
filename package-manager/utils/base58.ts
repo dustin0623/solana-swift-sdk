@@ -49,7 +49,7 @@ export function base58Encode(bytes: Uint8Array): string {
 export function base58Decode(value: string): Uint8Array {
   if (value.length === 0) return new Uint8Array(0);
 
-  const bytes: number[] = [0];
+  const bytes: number[] = [];
   for (const char of value) {
     const digit = INDEX[char];
     if (digit === undefined) {
