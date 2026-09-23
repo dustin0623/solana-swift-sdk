@@ -9,6 +9,8 @@ import { MintClient } from "../tokens/MintClient.js";
 import { NftClient } from "../nft/NftClient.js";
 import { ProgramClient } from "../programs/ProgramClient.js";
 import { PoolClient } from "../pools/PoolClient.js";
+import { SwapClient } from "../swap/SwapClient.js";
+import { PoolQuoteProvider } from "../swap/providers/PoolQuoteProvider.js";
 import { ParserClient } from "../parser/ParserClient.js";
 import { WalletClient } from "../wallet/WalletClient.js";
 import type { BlockReader } from "../reader/BlockReader.js";
@@ -62,6 +64,8 @@ export class SolanaClient {
    * registered — register one for the protocols your app supports.
    */
   public readonly pools: PoolClient;
+  /** Quote-only swap engine. Never signs or executes. */
+  public readonly swap: SwapClient;
   public readonly stream: StreamEngine;
   /** Offline parsing of raw RPC payloads. */
   public readonly parser: ParserClient;
@@ -112,6 +116,7 @@ export class SolanaClient {
     this.nft = new NftClient(this.reader, this.tokens);
     this.programs = new ProgramClient(this.rpc, this.reader.accounts);
     this.pools = new PoolClient([], this.reader.accounts);
+    this.swap = new SwapClient([new PoolQuoteProvider(this.pools)]);
     this.stream = new StreamEngine(
       this.rpc,
       subscriptionProvider,

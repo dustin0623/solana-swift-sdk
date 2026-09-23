@@ -245,3 +245,5 @@ export type {
   PoolType,
   PoolValue,
 } from "./pools/types.js";
+
+export * from "./swap/index.js";
