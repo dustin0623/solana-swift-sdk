@@ -12,6 +12,7 @@ import {
   INNER_IX_SIGNATURE,
   VERSIONED_SIGNATURE,
   lookupAddr,
+  mint,
 } from "./fixtures.js";
 
 describe("TransactionParser", () => {
@@ -37,7 +38,7 @@ describe("TransactionParser", () => {
     expect(parsed.success).toBe(true);
     expect(parsed.tokenTransfers).toHaveLength(1);
     const transfer = parsed.tokenTransfers[0];
-    expect(transfer?.mint).toBe("MintPubkey111111111111111111111111111111111");
+    expect(transfer?.mint).toBe(mint);
     expect(transfer?.amount).toBe("100000000");
     expect(transfer?.decimals).toBe(6);
     expect(transfer?.uiAmount).toBe("100");
