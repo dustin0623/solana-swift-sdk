@@ -13,13 +13,19 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./helius": {
+      "types": "./dist/helius.d.ts",
+      "import": "./dist/helius.js",
+      "require": "./dist/helius.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
-    "build": "tsup index.ts --format esm,cjs --dts --clean --out-dir dist",
+    "build": "tsup index.ts helius.ts --format esm,cjs --dts --clean --out-dir dist",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
