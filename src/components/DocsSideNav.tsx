@@ -1,9 +1,75 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { X } from "lucide-react";
-import { docsNav } from "../lib/docs-nav";
+import { useEffect, useState } from "react";
+import { ChevronDown, FlaskConical, X } from "lucide-react";
+import { docsNav, isGroup, type NavEntry, type NavGroup, type NavItem } from "../lib/docs-nav";
 import { setSidebarOpen, useSidebarOpen } from "../lib/sidebar-store";
 import { Button } from "./ui/button";
+
+function contains(entries: NavEntry[], pathname: string): boolean {
+  return entries.some((e) => (isGroup(e) ? contains(e.items, pathname) : e.to === pathname));
+}
+
+function ItemLink({ item, pathname }: { item: NavItem; pathname: string }) {
+  const active = item.to === pathname;
+  return (
+    <a
+      href={item.to}
+      onClick={(event) => {
+        event.preventDefault();
+        setSidebarOpen(null);
+        window.history.pushState(null, "", item.to);
+        window.dispatchEvent(new PopStateEvent("popstate"));
+      }}
+      aria-current={active ? "page" : undefined}
+      className={`relative flex items-center gap-1.5 py-1.5 pl-3 pr-2 text-[13px] leading-5 transition-colors ${
+        active
+          ? "font-medium text-sidebar-primary before:absolute before:-left-px before:inset-y-0 before:w-px before:bg-sidebar-primary"
+          : "text-sidebar-foreground/60 hover:text-sidebar-foreground"
+      }`}
+    >
+      {item.playground ? <FlaskConical className="size-3 shrink-0 text-sidebar-primary" /> : null}
+      <span>{item.title}</span>
+    </a>
+  );
+}
+
+function Group({ group, pathname }: { group: NavGroup; pathname: string }) {
+  const hasActive = contains(group.items, pathname);
+  const [open, setOpen] = useState(hasActive);
+  useEffect(() => {
+    if (hasActive) setOpen(true);
+  }, [hasActive]);
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className={`flex w-full items-center justify-between py-1.5 pl-3 pr-2 text-left text-[13px] font-medium leading-5 transition-colors hover:text-sidebar-foreground ${
+          open ? "rounded-md border border-sidebar-foreground/70 text-sidebar-foreground" : "text-sidebar-foreground/85"
+        }`}
+      >
+        <span>{group.title}</span>
+        <ChevronDown className={`size-3.5 transition-transform ${open ? "" : "-rotate-90"}`} />
+      </button>
+      {open ? (
+        <div className="ml-3 mt-1 border-l border-sidebar-border">
+          <Entries entries={group.items} pathname={pathname} />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function Entries({ entries, pathname }: { entries: NavEntry[]; pathname: string }) {
+  return (
+    <>
+      {entries.map((e) =>
+        isGroup(e) ? <Group key={e.title} group={e} pathname={pathname} /> : <ItemLink key={e.to} item={e} pathname={pathname} />,
+      )}
+    </>
+  );
+}
 
 export function DocsSideNav() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
@@ -24,21 +90,7 @@ export function DocsSideNav() {
             {section.title}
           </h2>
           <div className="border-l border-sidebar-border">
-            {section.items.map((doc) => (
-              <Link
-                key={doc.slug}
-                to="/docs/$slug"
-                params={{ slug: doc.slug }}
-                onClick={() => setSidebarOpen(null)}
-                className="relative block py-1.5 pl-3 pr-2 text-[13px] leading-5 text-sidebar-foreground/60 transition-colors hover:text-sidebar-foreground"
-                activeProps={{
-                  className:
-                    "relative block py-1.5 pl-3 pr-2 text-[13px] font-medium leading-5 text-sidebar-primary before:absolute before:-left-px before:inset-y-0 before:w-px before:bg-sidebar-primary",
-                }}
-              >
-                {doc.title}
-              </Link>
-            ))}
+            <Entries entries={section.items} pathname={pathname} />
           </div>
         </section>
       ))}
