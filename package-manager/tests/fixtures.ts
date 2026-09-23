@@ -78,6 +78,7 @@ export const failedTransaction: RpcTransaction = {
   },
   meta: {
     ...successfulSolTransfer.meta,
+    fee: successfulSolTransfer.meta.fee,
     err: { InstructionError: [0, "Custom"] },
     logMessages: [
       "Program 11111111111111111111111111111111 invoke [1]",
