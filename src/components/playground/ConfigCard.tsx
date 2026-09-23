@@ -86,7 +86,6 @@ export function ConfigCard() {
         </label>
         <div className="flex flex-wrap gap-2">
           <button className={btn} onClick={save}>Save configuration</button>
-          <button className={ghost} onClick={() => setDraft({ ...draft, testSecretKey: KeypairSigner.generate().toString() && "" })} hidden />
           <button className={ghost} onClick={() => { clearConfig(); setDraft(DEFAULT_CONFIG); setMsg("Cleared from this browser."); }}>Clear saved</button>
           <button className={ghost} onClick={async () => {
             setTest("Testing…");
