@@ -204,7 +204,7 @@ function TokenCard({ client, network }: { client: SolanaClient; network: LiveNet
     >
       <input className={input} value={mintAddress} onChange={(e) => setMint(e.target.value.trim())} aria-label="Mint address" placeholder="Mint address" />
       <div className="mt-2 flex flex-wrap gap-2">
-        <button className={btn} disabled={!mintAddress || info.busy} onClick={() => void info.run(async () => { const { raw: _raw, ...rest } = await client.tokens.get(mintAddress); return rest; })}>
+        <button className={btn} disabled={!mintAddress || info.busy} onClick={() => void info.run(async () => { const token = await client.tokens.get(mintAddress); const { raw: _raw, ...mintRest } = token.mint; return { asset: token.asset, mint: mintRest }; })}>
           Get token
         </button>
         <button className={btn} disabled={!mintAddress || supply.busy} onClick={() => void supply.run(async () => (await client.tokens.supply(mintAddress)).amount)}>
