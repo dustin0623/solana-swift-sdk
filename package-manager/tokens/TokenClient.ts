@@ -21,11 +21,12 @@ export class TokenClient {
   constructor(
     private readonly reader: ReaderClient,
     private readonly builder: BuilderClient,
-    rpcMints?: MintClient,
+    mints: MintClient,
   ) {
-    this.mints = rpcMints ?? new MintClient((reader.slots as unknown as { rpc: never }) as never);
-    this.transfers = new TransferClient(builder, this.mints);
+    this.mints = mints;
+    this.transfers = new TransferClient(builder, mints);
   }
+
 
   public getMint(mint: Address): Promise<MintInfo> {
     return this.mints.get(mint);
