@@ -116,7 +116,10 @@ export class SolanaClient {
     this.nft = new NftClient(this.reader, this.tokens);
     this.programs = new ProgramClient(this.rpc, this.reader.accounts);
     this.pools = new PoolClient([], this.reader.accounts);
-    this.swap = new SwapClient([new PoolQuoteProvider(this.pools)]);
+    this.swap = new SwapClient([new PoolQuoteProvider(this.pools)], {
+      rpc: this.rpc,
+      builder: this.builder,
+    });
     this.stream = new StreamEngine(
       this.rpc,
       subscriptionProvider,

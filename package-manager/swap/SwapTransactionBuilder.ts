@@ -46,7 +46,7 @@ export class SwapTransactionBuilder {
 
   private async tokenProgramOf(mint: Address): Promise<Address> {
     if (mint === WRAPPED_SOL_MINT) return TOKEN_PROGRAM_ID;
-    const info = await this.rpc.getAccountInfo(mint, { encoding: "base64" } as never);
+    const info = await this.rpc.getAccountInfo(mint);
     const owner = (info.value as { owner?: string } | null)?.owner;
     if (!owner) throw new ValidationError(`mint ${mint} does not exist`, "mint");
     if (owner !== TOKEN_PROGRAM_ID && owner !== TOKEN_2022_PROGRAM_ID) {
@@ -56,7 +56,7 @@ export class SwapTransactionBuilder {
   }
 
   private async exists(address: Address): Promise<boolean> {
-    const info = await this.rpc.getAccountInfo(address, { encoding: "base64" } as never);
+    const info = await this.rpc.getAccountInfo(address);
     return info.value !== null && info.value !== undefined;
   }
 
@@ -114,7 +114,7 @@ export class SwapTransactionBuilder {
     let rentEach = 0n;
     const needsRent = (wrapSol && !sourceExists) || !destExists;
     if (needsRent) {
-      rentEach = BigInt(await this.rpc.getMinimumBalanceForRentExemption(TOKEN_ACCOUNT_SIZE) as unknown as number);
+      rentEach = BigInt(await this.rpc.getMinimumBalanceForRentExemption(TOKEN_ACCOUNT_SIZE));
     }
 
     if (params.computeUnitLimit) pre.push(InstructionBuilder.setComputeUnitLimit(params.computeUnitLimit));
