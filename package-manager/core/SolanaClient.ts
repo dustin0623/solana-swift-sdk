@@ -20,7 +20,7 @@ export interface SolanaClientOptions {
    * One of mainnet/devnet/testnet/localnet. Defaults to mainnet.
    * A custom `rpc.url` overrides the network endpoint.
    */
-  network?: NetworkType | Network;
+  network?: NetworkType;
   rpc?: {
     /** Any Solana JSON-RPC HTTP endpoint. */
     url?: string;

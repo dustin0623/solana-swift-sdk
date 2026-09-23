@@ -45,7 +45,7 @@ export class RpcClient {
   }
 
   private config(config: CommitmentConfig = {}): Record<string, unknown> {
-    return { commitment: config.commitment ?? this.defaultCommitment, ...omitUndefined(config) };
+    return { commitment: config.commitment ?? this.defaultCommitment, ...omitUndefined(config as Record<string, unknown>) };
   }
 
   /* ── Accounts & balances ───────────────────────────────────────────── */

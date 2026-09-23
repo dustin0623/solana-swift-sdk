@@ -58,7 +58,7 @@ export class KeypairSigner implements SolanaSigner {
     return { address: this.address };
   }
 
-  public override toString(): string {
+  public toString(): string {
     return `KeypairSigner(${this.address})`;
   }
 }
