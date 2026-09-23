@@ -77,7 +77,7 @@ describe("swap quotes", () => {
     const big = 10n ** 30n;
     const r = constantProductQuote(big, big, big * 2n, 0);
     expect(r.amountOut).toBe(big);
-    expect(minimumReceived(123_456_789_012_345_678_901n, 1)).toBe(123_444_443_333_444_444_323n);
+    expect(minimumReceived(123_456_789_012_345_678_901n, 1)).toBe(123_444_443_333_444_444_333n);
   });
   it("expired quotes", async () => {
     let t = 1_000;
