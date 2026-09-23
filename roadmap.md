@@ -19,3 +19,5 @@
 - [x] Phase 5: swap transaction builder (sdk.swap.build, unsigned only)
 - [x] Phase 6: swap execution (sdk.swap.simulate / execute, explicit signers)
 - [x] Match documentation website layout to the live HiveXPH reference
+- [x] Full review + polish: tests (151), typecheck, package build verified; API Reference updated with all phase exports; homepage signing example aligned with canonical pattern; mainnet default documented; playground PDA demo uses a real program id
+
