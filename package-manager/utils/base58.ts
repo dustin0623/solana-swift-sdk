@@ -16,7 +16,7 @@ const INDEX: Record<string, number> = (() => {
 export function base58Encode(bytes: Uint8Array): string {
   if (bytes.length === 0) return "";
 
-  const digits: number[] = [0];
+  const digits: number[] = [];
   for (const byte of bytes) {
     let carry = byte;
     for (let i = 0; i < digits.length; i += 1) {
@@ -30,11 +30,18 @@ export function base58Encode(bytes: Uint8Array): string {
     }
   }
 
-  let out = "";
+  let leadingZeros = 0;
   for (const byte of bytes) {
     if (byte !== 0) break;
-    out += ALPHABET[0];
+    leadingZeros += 1;
   }
+
+  // All-zero input encodes as one '1' per zero byte and nothing else.
+  if (digits.length === 0) {
+    return ALPHABET[0].repeat(leadingZeros || 1);
+  }
+
+  let out = ALPHABET[0].repeat(leadingZeros);
   for (let i = digits.length - 1; i >= 0; i -= 1) out += ALPHABET[digits[i] as number];
   return out;
 }
