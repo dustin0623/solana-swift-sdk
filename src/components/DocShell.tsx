@@ -53,7 +53,10 @@ export function DocShell({ children }: DocShellProps) {
                 type="button"
                 variant="ghost"
                 size="icon"
-                onClick={() => toggleSidebar(sidebarOpen !== false)}
+                onClick={() => {
+                  const visibleByDefault = window.matchMedia("(min-width: 1024px)").matches;
+                  toggleSidebar(sidebarOpen ?? visibleByDefault);
+                }}
                 className="mr-4 size-8 shrink-0 border-r border-chrome-border text-chrome-muted hover:bg-chrome-foreground/10 hover:text-chrome-foreground"
                 aria-label="Toggle documentation navigation"
               >
