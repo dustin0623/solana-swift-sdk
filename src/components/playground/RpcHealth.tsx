@@ -4,10 +4,10 @@ import { DEFAULT_CONFIG, buildClient, type PlaygroundConfig } from "../../lib/pl
 type Result = {
   name: string;
   status: "healthy" | "unhealthy" | "error";
-  latencyMs?: number;
-  slot?: number;
-  version?: string;
-  detail?: string;
+  latencyMs?: number | undefined;
+  slot?: number | undefined;
+  version?: string | undefined;
+  detail?: string | undefined;
 };
 
 function describeTarget(c: PlaygroundConfig): string {
