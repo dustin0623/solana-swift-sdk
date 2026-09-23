@@ -181,3 +181,29 @@ export type {
   TokenMetadata,
 } from "./types/token.js";
 export { exactAmount, parseTokenAmount, lamportsAmount } from "./utils/tokenAmount.js";
+
+// ── Token discovery ───────────────────────────────────────────────────
+export { TokenDiscoveryClient } from "./discovery/TokenDiscoveryClient.js";
+export type { DiscoveryCallOptions } from "./discovery/TokenDiscoveryClient.js";
+export { RpcTokenDiscoveryProvider } from "./discovery/providers/RpcTokenDiscoveryProvider.js";
+export type { RpcTokenDiscoveryProviderOptions } from "./discovery/providers/RpcTokenDiscoveryProvider.js";
+export { StaticTokenListProvider } from "./discovery/providers/StaticTokenListProvider.js";
+export type {
+  StaticTokenEntry,
+  StaticTokenListProviderOptions,
+} from "./discovery/providers/StaticTokenListProvider.js";
+export { capabilities as discoveryCapabilities, NO_CAPABILITIES } from "./discovery/types.js";
+export type {
+  DiscoveredToken,
+  DiscoveryCapabilities,
+  DiscoveryCapability,
+  DiscoveryDataOrigin,
+  DiscoveryListQuery,
+  DiscoveryMarketData,
+  DiscoveryPage,
+  DiscoveryPageRequest,
+  DiscoverySearchQuery,
+  DiscoverySort,
+  DiscoverySource,
+  TokenDiscoveryProvider,
+} from "./discovery/types.js";

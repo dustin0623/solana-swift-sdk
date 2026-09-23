@@ -17,6 +17,14 @@ import type {
   TokenSupply,
 } from "../types/token.js";
 import { TransferClient, type TokenTransferRequest } from "./TransferClient.js";
+import { TokenDiscoveryClient } from "../discovery/TokenDiscoveryClient.js";
+import { RpcTokenDiscoveryProvider } from "../discovery/providers/RpcTokenDiscoveryProvider.js";
+import type {
+  DiscoveredToken,
+  DiscoveryListQuery,
+  DiscoveryPage,
+  DiscoverySearchQuery,
+} from "../discovery/types.js";
 
 /**
  * `solana.tokens` — SPL token reads and transaction builders.
@@ -27,6 +35,12 @@ import { TransferClient, type TokenTransferRequest } from "./TransferClient.js";
 export class TokenClient {
   public readonly mints: MintClient;
   public readonly transfers: TransferClient;
+  /**
+   * Token discovery ("which tokens should I show?"), kept separate from token
+   * data ("tell me about this mint"). Ships with the on-chain RPC provider;
+   * register indexed or market-data providers for listing and text search.
+   */
+  public readonly discovery: TokenDiscoveryClient;
 
   constructor(
     private readonly reader: ReaderClient,
@@ -35,6 +49,19 @@ export class TokenClient {
   ) {
     this.mints = mints;
     this.transfers = new TransferClient(builder, mints);
+    this.discovery = new TokenDiscoveryClient([new RpcTokenDiscoveryProvider(reader.tokens)]);
+  }
+
+  /** Shortcut for `tokens.discovery.search(...)`. */
+  public search(
+    query: string | DiscoverySearchQuery,
+  ): Promise<DiscoveryPage<DiscoveredToken>> {
+    return this.discovery.search(query);
+  }
+
+  /** Shortcut for `tokens.discovery.list(...)`. */
+  public list(query: DiscoveryListQuery = {}): Promise<DiscoveryPage<DiscoveredToken>> {
+    return this.discovery.list(query);
   }
 
 

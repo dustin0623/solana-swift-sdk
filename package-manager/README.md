@@ -21,3 +21,26 @@ const tx = await solana.reader.transaction(signature, { commitment: "finalized" 
 - Amounts are bigint / decimal strings — never floats.
 
 Scripts: `bun run build`, `bun run test`, `bun run typecheck`.
+
+## Token discovery
+
+Token data ("tell me about this mint") and token discovery ("which tokens
+should I show?") are separate concerns. Discovery sits behind a provider
+interface, so it can be backed by RPC, an indexer, a market-data API, an
+external token database, or your own implementation.
+
+```ts
+// Ships by default: on-chain provider. Resolves any mint, no indexer needed.
+const token = await sdk.tokens.discovery.get(mint);
+const page = await sdk.tokens.search("bonk");
+
+// Register an indexed/market-data provider for listing and text search.
+sdk.tokens.discovery.register(myProvider, { default: true });
+await sdk.tokens.list({ sort: "volume", limit: 50, cursor: page.nextCursor });
+```
+
+Providers declare what they can actually do (`provider.capabilities`,
+`provider.sorts`); unsupported sorts and searches throw
+`UnsupportedOperationError` instead of returning invented data. Every result
+carries `source.origin`: `"on-chain"` for verifiable chain state, `"indexed"`
+for third-party price, volume, liquidity, market cap and verification data.
