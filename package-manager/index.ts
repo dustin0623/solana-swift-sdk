@@ -151,3 +151,33 @@ export {
   createProgramAddress,
   isOnCurve,
 } from "./utils/pda.js";
+
+// ── Token infrastructure ──────────────────────────────────────────────
+export { TokenReader } from "./reader/TokenReader.js";
+export type { TokenAccountsQuery, TokenMetadataOptions } from "./reader/TokenReader.js";
+export {
+  METAPLEX_METADATA_PROGRAM_ID,
+  metaplexMetadataAddress,
+  decodeMetaplexMetadata,
+} from "./reader/metadata/MetaplexMetadata.js";
+export { fetchOffChainMetadata } from "./reader/metadata/OffChainMetadata.js";
+export type { OffChainFetchOptions } from "./reader/metadata/OffChainMetadata.js";
+export { NATIVE_SOL, WRAPPED_SOL_MINT } from "./types/token.js";
+export type {
+  NativeSol,
+  TokenProgram,
+  ExactAmount,
+  TokenAsset,
+  TokenExtension,
+  TokenMint,
+  Token,
+  TokenSupply,
+  TokenAccount,
+  TokenAccountState,
+  TokenBalanceSummary,
+  TokenCreator,
+  OnChainTokenMetadata,
+  OffChainTokenMetadata,
+  TokenMetadata,
+} from "./types/token.js";
+export { exactAmount, parseTokenAmount, lamportsAmount } from "./utils/tokenAmount.js";
