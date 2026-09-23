@@ -15,12 +15,12 @@ function highlight(code: string): ReactNode[] {
     if (index > last) out.push(code.slice(last, index));
     const cls =
       token.startsWith("//") || token.startsWith("#")
-        ? "text-muted-foreground italic"
+        ? "text-code-comment italic"
         : token.startsWith('"') || token.startsWith("`")
-          ? "text-primary"
+          ? "text-code-string"
           : /^\d/.test(token)
-            ? "text-accent-foreground"
-            : "font-semibold text-foreground";
+            ? "text-code-number"
+            : "font-semibold text-code-keyword";
     out.push(
       <span key={key++} className={cls}>
         {token}
