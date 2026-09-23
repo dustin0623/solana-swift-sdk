@@ -81,13 +81,6 @@ export function DocShell({ children }: DocShellProps) {
               >
                 <Boxes className="size-3.5" /> API Reference
               </Link>
-              <Link
-                to="/docs/playground"
-                className="flex h-full items-center border-b-2 border-transparent font-mono text-[10px] uppercase tracking-[0.18em] text-chrome-muted transition-colors hover:text-chrome-foreground"
-                activeProps={{ className: "flex h-full items-center border-b-2 border-primary font-mono text-[10px] uppercase tracking-[0.18em] text-chrome-foreground" }}
-              >
-                Playground
-              </Link>
             </nav>
           </div>
         </div>
