@@ -1,0 +1,124 @@
+/**
+ * Typed SDK errors.
+ *
+ * Every error carries a stable `code` so applications can branch on failure
+ * type without string matching. RPC errors keep the raw JSON-RPC payload so
+ * nothing the node reported is lost.
+ */
+
+export type SolanaSdkErrorCode =
+  | "RPC_ERROR"
+  | "HTTP_ERROR"
+  | "TRANSACTION_ERROR"
+  | "SIMULATION_ERROR"
+  | "VALIDATION_ERROR"
+  | "CONFIGURATION_ERROR"
+  | "PROVIDER_ERROR"
+  | "SUBSCRIPTION_ERROR"
+  | "UNSUPPORTED_OPERATION";
+
+export class SolanaSdkError extends Error {
+  public readonly code: SolanaSdkErrorCode;
+
+  constructor(code: SolanaSdkErrorCode, message: string) {
+    super(message);
+    this.name = new.target.name;
+    this.code = code;
+  }
+}
+
+/** A JSON-RPC level failure returned by the node. */
+export class RpcError extends SolanaSdkError {
+  public readonly method: string;
+  public readonly rpcCode: number | undefined;
+  public readonly data: unknown;
+
+  constructor(options: {
+    method: string;
+    message: string;
+    rpcCode?: number | undefined;
+    data?: unknown;
+  }) {
+    super("RPC_ERROR", `RPC ${options.method} failed: ${options.message}`);
+    this.method = options.method;
+    this.rpcCode = options.rpcCode;
+    this.data = options.data;
+  }
+}
+
+/** Transport level failure (non-2xx HTTP, unreachable endpoint, bad JSON). */
+export class RpcHttpError extends SolanaSdkError {
+  public readonly status: number | undefined;
+  public readonly endpoint: string;
+
+  constructor(options: { endpoint: string; message: string; status?: number | undefined }) {
+    super("HTTP_ERROR", `RPC transport error (${options.endpoint}): ${options.message}`);
+    this.endpoint = options.endpoint;
+    this.status = options.status;
+  }
+}
+
+export class TransactionError extends SolanaSdkError {
+  public readonly signature: string | undefined;
+  public readonly cause: unknown;
+
+  constructor(message: string, options: { signature?: string | undefined; cause?: unknown } = {}) {
+    super("TRANSACTION_ERROR", message);
+    this.signature = options.signature;
+    this.cause = options.cause;
+  }
+}
+
+export class SimulationError extends SolanaSdkError {
+  public readonly logs: readonly string[];
+  public readonly simulationError: unknown;
+  public readonly unitsConsumed: number | undefined;
+
+  constructor(options: {
+    message: string;
+    logs?: readonly string[] | undefined;
+    error?: unknown;
+    unitsConsumed?: number | undefined;
+  }) {
+    super("SIMULATION_ERROR", options.message);
+    this.logs = options.logs ?? [];
+    this.simulationError = options.error;
+    this.unitsConsumed = options.unitsConsumed;
+  }
+}
+
+export class ValidationError extends SolanaSdkError {
+  public readonly field: string | undefined;
+
+  constructor(message: string, field?: string) {
+    super("VALIDATION_ERROR", message);
+    this.field = field;
+  }
+}
+
+export class ConfigurationError extends SolanaSdkError {
+  constructor(message: string) {
+    super("CONFIGURATION_ERROR", message);
+  }
+}
+
+export class ProviderError extends SolanaSdkError {
+  public readonly provider: string;
+
+  constructor(provider: string, message: string) {
+    super("PROVIDER_ERROR", `${provider}: ${message}`);
+    this.provider = provider;
+  }
+}
+
+export class SubscriptionError extends SolanaSdkError {
+  constructor(message: string) {
+    super("SUBSCRIPTION_ERROR", message);
+  }
+}
+
+export class UnsupportedOperationError extends SolanaSdkError {
+  constructor(message: string) {
+    super("UNSUPPORTED_OPERATION", message);
+  }
+}
