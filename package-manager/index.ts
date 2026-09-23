@@ -108,8 +108,9 @@ export {
   SubscriptionError,
   UnsupportedOperationError,
   SolanaSdkError,
+  SwapExecutionError,
 } from "./errors/index.js";
-export type { SolanaSdkErrorCode } from "./errors/index.js";
+export type { SolanaSdkErrorCode, SwapFailureReason, SwapExecutionStage } from "./errors/index.js";
 
 export {
   base58Encode,
