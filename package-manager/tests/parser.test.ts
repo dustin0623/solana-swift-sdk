@@ -11,6 +11,7 @@ import {
   SPL_TRANSFER_SIGNATURE,
   INNER_IX_SIGNATURE,
   VERSIONED_SIGNATURE,
+  lookupAddr,
 } from "./fixtures.js";
 
 describe("TransactionParser", () => {
@@ -55,7 +56,7 @@ describe("TransactionParser", () => {
     const parsed = TransactionParser.parse(VERSIONED_SIGNATURE, versionedTransaction);
     expect(parsed.version).toBe(0);
     expect(TransactionParser.usesLookupTables(versionedTransaction)).toBe(true);
-    expect(parsed.accountKeys).toContain("LookupAddr111111111111111111111111111111111");
+    expect(parsed.accountKeys).toContain(lookupAddr);
     expect(parsed.programs).toContain("11111111111111111111111111111111");
   });
 });
