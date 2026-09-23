@@ -1,6 +1,6 @@
-import type { RpcClient } from "../rpc/RpcClient";
-import type { CommitmentConfig, RpcEpochInfo } from "../rpc/types";
-import type { LatestBlockhash } from "../types/index";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { CommitmentConfig, RpcEpochInfo } from "../rpc/types.js";
+import type { LatestBlockhash } from "../types/index.js";
 
 /** Slot, block height, epoch and blockhash reads. */
 export class SlotReader {

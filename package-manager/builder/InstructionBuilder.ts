@@ -1,5 +1,5 @@
-import { ValidationError } from "../errors/index";
-import type { Address } from "../types/index";
+import { ValidationError } from "../errors/index.js";
+import type { Address } from "../types/index.js";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   MEMO_PROGRAM_ID,
@@ -8,11 +8,11 @@ import {
   TOKEN_PROGRAM_ID,
   COMPUTE_BUDGET_PROGRAM_ID,
   assertAddress,
-} from "../utils/address";
-import { addressToBytes } from "../utils/address";
-import { concatBytes, encodeU32LE, encodeU64LE } from "../utils/bytes";
-import { findProgramAddress } from "../utils/pda";
-import type { Instruction } from "./types";
+} from "../utils/address.js";
+import { addressToBytes } from "../utils/address.js";
+import { concatBytes, encodeU32LE, encodeU64LE } from "../utils/bytes.js";
+import { findProgramAddress } from "../utils/pda.js";
+import type { Instruction } from "./types.js";
 
 /** SPL Token instruction discriminators actually used by this SDK. */
 const TOKEN_IX = {

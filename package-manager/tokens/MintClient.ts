@@ -1,9 +1,9 @@
-import { ValidationError } from "../errors/index";
-import type { RpcClient } from "../rpc/RpcClient";
-import type { CommitmentConfig } from "../rpc/types";
-import type { Address, MintInfo } from "../types/index";
-import { assertAddress, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address";
-import { fromBaseUnits } from "../utils/amount";
+import { ValidationError } from "../errors/index.js";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { CommitmentConfig } from "../rpc/types.js";
+import type { Address, MintInfo } from "../types/index.js";
+import { assertAddress, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address.js";
+import { fromBaseUnits } from "../utils/amount.js";
 
 interface ParsedMint {
   decimals?: number;

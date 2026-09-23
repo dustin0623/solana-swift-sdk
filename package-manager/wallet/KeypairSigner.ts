@@ -1,9 +1,9 @@
 import { ed25519 } from "@noble/curves/ed25519.js";
-import { ValidationError } from "../errors/index";
-import type { Address } from "../types/index";
-import { base58Decode, base58Encode } from "../utils/base58";
-import { bytesToAddress } from "../utils/address";
-import type { SolanaSigner } from "./Signer";
+import { ValidationError } from "../errors/index.js";
+import type { Address } from "../types/index.js";
+import { base58Decode, base58Encode } from "../utils/base58.js";
+import { bytesToAddress } from "../utils/address.js";
+import type { SolanaSigner } from "./Signer.js";
 
 /**
  * Server-side signer backed by an ed25519 keypair.

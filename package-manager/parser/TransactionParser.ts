@@ -1,9 +1,9 @@
-import type { RpcTransaction } from "../rpc/types";
-import type { Address, ParsedInstruction, ParsedTransaction } from "../types/index";
-import { InstructionParser } from "./InstructionParser";
-import { LogParser } from "./LogParser";
-import { TokenTransferParser } from "./TokenTransferParser";
-import { TransferParser } from "./TransferParser";
+import type { RpcTransaction } from "../rpc/types.js";
+import type { Address, ParsedInstruction, ParsedTransaction } from "../types/index.js";
+import { InstructionParser } from "./InstructionParser.js";
+import { LogParser } from "./LogParser.js";
+import { TokenTransferParser } from "./TokenTransferParser.js";
+import { TransferParser } from "./TransferParser.js";
 
 /**
  * Normalises a `getTransaction` response into one consistent shape.

@@ -1,6 +1,6 @@
-import type { Address, ParsedInstruction, SolTransfer } from "../types/index";
-import { SYSTEM_PROGRAM_ID } from "../utils/address";
-import { lamportsToSol } from "../utils/amount";
+import type { Address, ParsedInstruction, SolTransfer } from "../types/index.js";
+import { SYSTEM_PROGRAM_ID } from "../utils/address.js";
+import { lamportsToSol } from "../utils/amount.js";
 
 interface SystemTransferInfo {
   source?: string;

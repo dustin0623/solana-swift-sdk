@@ -1,9 +1,9 @@
-import type { BuilderClient } from "../builder/BuilderClient";
-import type { TransactionBuilder } from "../builder/TransactionBuilder";
-import type { Address, Signature, TransactionStatusInfo, Commitment } from "../types/index";
-import { assertAddress } from "../utils/address";
-import { solToLamports } from "../utils/amount";
-import type { SolanaSigner } from "../wallet/Signer";
+import type { BuilderClient } from "../builder/BuilderClient.js";
+import type { TransactionBuilder } from "../builder/TransactionBuilder.js";
+import type { Address, Signature, TransactionStatusInfo, Commitment } from "../types/index.js";
+import { assertAddress } from "../utils/address.js";
+import { solToLamports } from "../utils/amount.js";
+import type { SolanaSigner } from "../wallet/Signer.js";
 
 export interface SolTransferRequest {
   from: Address;

@@ -1,19 +1,19 @@
-import type { BuilderClient } from "../builder/BuilderClient";
-import { HttpRpcProvider } from "../rpc/HttpRpcProvider";
-import type { SolanaRpcProvider } from "../rpc/RpcProvider";
-import { RpcClient } from "../rpc/RpcClient";
-import { ReaderClient } from "../reader/ReaderClient";
-import { PaymentClient } from "../payments/PaymentClient";
-import { TokenClient } from "../tokens/TokenClient";
-import { MintClient } from "../tokens/MintClient";
-import { NftClient } from "../nft/NftClient";
-import { ProgramClient } from "../programs/ProgramClient";
-import { StreamEngine } from "../reader/stream/StreamEngine";
-import type { SolanaRpcSubscriptionProvider } from "../rpc/RpcProvider";
-import { WebSocketRpcProvider } from "../rpc/WebSocketRpcProvider";
-import { deriveWsUrl, endpointsFor, isNetwork, type Network } from "./networks";
-import type { Commitment, Network as NetworkType } from "../types/index";
-import { ConfigurationError } from "../errors/index";
+import type { BuilderClient } from "../builder/BuilderClient.js";
+import { HttpRpcProvider } from "../rpc/HttpRpcProvider.js";
+import type { SolanaRpcProvider } from "../rpc/RpcProvider.js";
+import { RpcClient } from "../rpc/RpcClient.js";
+import { ReaderClient } from "../reader/ReaderClient.js";
+import { PaymentClient } from "../payments/PaymentClient.js";
+import { TokenClient } from "../tokens/TokenClient.js";
+import { MintClient } from "../tokens/MintClient.js";
+import { NftClient } from "../nft/NftClient.js";
+import { ProgramClient } from "../programs/ProgramClient.js";
+import { StreamEngine } from "../reader/stream/StreamEngine.js";
+import type { SolanaRpcSubscriptionProvider } from "../rpc/RpcProvider.js";
+import { WebSocketRpcProvider } from "../rpc/WebSocketRpcProvider.js";
+import { deriveWsUrl, endpointsFor, isNetwork, type Network } from "./networks.js";
+import type { Commitment, Network as NetworkType } from "../types/index.js";
+import { ConfigurationError } from "../errors/index.js";
 
 export interface SolanaClientOptions {
   /**

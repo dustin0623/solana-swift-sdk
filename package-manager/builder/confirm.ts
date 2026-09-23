@@ -1,6 +1,6 @@
-import { TransactionError } from "../errors/index";
-import type { RpcClient } from "../rpc/RpcClient";
-import type { Commitment, Signature, TransactionStatusInfo } from "../types/index";
+import { TransactionError } from "../errors/index.js";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { Commitment, Signature, TransactionStatusInfo } from "../types/index.js";
 
 const ORDER: Record<Commitment, number> = { processed: 0, confirmed: 1, finalized: 2 };
 

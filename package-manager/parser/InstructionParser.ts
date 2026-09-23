@@ -1,6 +1,6 @@
-import type { RpcInstruction } from "../rpc/types";
-import type { Address, ParsedInstruction } from "../types/index";
-import { programName } from "../utils/address";
+import type { RpcInstruction } from "../rpc/types.js";
+import type { Address, ParsedInstruction } from "../types/index.js";
+import { programName } from "../utils/address.js";
 
 interface ParsedPayload {
   type?: string;

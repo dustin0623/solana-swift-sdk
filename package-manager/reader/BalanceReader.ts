@@ -1,8 +1,8 @@
-import type { RpcClient } from "../rpc/RpcClient";
-import type { CommitmentConfig } from "../rpc/types";
-import type { Address, Balance, TokenBalance } from "../types/index";
-import { assertAddress, TOKEN_PROGRAM_ID } from "../utils/address";
-import { fromBaseUnits, lamportsToSol } from "../utils/amount";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { CommitmentConfig } from "../rpc/types.js";
+import type { Address, Balance, TokenBalance } from "../types/index.js";
+import { assertAddress, TOKEN_PROGRAM_ID } from "../utils/address.js";
+import { fromBaseUnits, lamportsToSol } from "../utils/amount.js";
 
 /** Native SOL and SPL token balances, always as exact integers. */
 export class BalanceReader {

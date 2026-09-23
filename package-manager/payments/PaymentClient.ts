@@ -1,14 +1,14 @@
-import type { BuilderClient } from "../builder/BuilderClient";
-import type { TransactionReader } from "../reader/TransactionReader";
-import type { MintClient } from "../tokens/MintClient";
-import type { TokenClient } from "../tokens/TokenClient";
+import type { BuilderClient } from "../builder/BuilderClient.js";
+import type { TransactionReader } from "../reader/TransactionReader.js";
+import type { MintClient } from "../tokens/MintClient.js";
+import type { TokenClient } from "../tokens/TokenClient.js";
 import {
   PaymentValidator,
   type PaymentValidationRequest,
   type PaymentValidationResult,
-} from "./PaymentValidator";
-import { SolPaymentClient } from "./SolPaymentClient";
-import { SplPaymentClient } from "./SplPaymentClient";
+} from "./PaymentValidator.js";
+import { SolPaymentClient } from "./SolPaymentClient.js";
+import { SplPaymentClient } from "./SplPaymentClient.js";
 
 /**
  * `solana.payments` — payment building and on-chain verification.

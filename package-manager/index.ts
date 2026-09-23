@@ -4,17 +4,17 @@
  * RPC-first, provider-agnostic TypeScript SDK for Solana.
  */
 
-export { SolanaClient } from "./core/SolanaClient";
-export type { SolanaClientOptions } from "./core/SolanaClient";
-export { endpointsFor, NETWORKS } from "./core/networks";
-export type { NetworkEndpoints } from "./core/networks";
+export { SolanaClient } from "./core/SolanaClient.js";
+export type { SolanaClientOptions } from "./core/SolanaClient.js";
+export { endpointsFor, NETWORKS } from "./core/networks.js";
+export type { NetworkEndpoints } from "./core/networks.js";
 
-export type { SolanaRpcProvider, SolanaRpcSubscriptionProvider } from "./rpc/RpcProvider";
-export { HttpRpcProvider } from "./rpc/HttpRpcProvider";
-export { WebSocketRpcProvider } from "./rpc/WebSocketRpcProvider";
-export { MockRpcProvider } from "./rpc/MockRpcProvider";
-export { RpcClient } from "./rpc/RpcClient";
-export type { RpcClientOptions } from "./rpc/RpcClient";
+export type { SolanaRpcProvider, SolanaRpcSubscriptionProvider } from "./rpc/RpcProvider.js";
+export { HttpRpcProvider } from "./rpc/HttpRpcProvider.js";
+export { WebSocketRpcProvider } from "./rpc/WebSocketRpcProvider.js";
+export { MockRpcProvider } from "./rpc/MockRpcProvider.js";
+export { RpcClient } from "./rpc/RpcClient.js";
+export type { RpcClientOptions } from "./rpc/RpcClient.js";
 export type {
   RpcAccountInfo,
   RpcBlock,
@@ -27,52 +27,52 @@ export type {
   RpcTokenBalance,
   RpcTransaction,
   CommitmentConfig,
-} from "./rpc/types";
+} from "./rpc/types.js";
 
-export { ReaderClient } from "./reader/ReaderClient";
-export { AccountReader } from "./reader/AccountReader";
-export { BalanceReader } from "./reader/BalanceReader";
-export { BlockReader } from "./reader/BlockReader";
-export { SlotReader } from "./reader/SlotReader";
-export { TransactionReader } from "./reader/TransactionReader";
-export { StreamEngine } from "./reader/stream/StreamEngine";
+export { ReaderClient } from "./reader/ReaderClient.js";
+export { AccountReader } from "./reader/AccountReader.js";
+export { BalanceReader } from "./reader/BalanceReader.js";
+export { BlockReader } from "./reader/BlockReader.js";
+export { SlotReader } from "./reader/SlotReader.js";
+export { TransactionReader } from "./reader/TransactionReader.js";
+export { StreamEngine } from "./reader/stream/StreamEngine.js";
 
-export { TransactionParser } from "./parser/TransactionParser";
-export { InstructionParser } from "./parser/InstructionParser";
-export { TransferParser } from "./parser/TransferParser";
-export { TokenTransferParser } from "./parser/TokenTransferParser";
-export { LogParser } from "./parser/LogParser";
+export { TransactionParser } from "./parser/TransactionParser.js";
+export { InstructionParser } from "./parser/InstructionParser.js";
+export { TransferParser } from "./parser/TransferParser.js";
+export { TokenTransferParser } from "./parser/TokenTransferParser.js";
+export { LogParser } from "./parser/LogParser.js";
 
-export { BuilderClient } from "./builder/BuilderClient";
-export { TransactionBuilder } from "./builder/TransactionBuilder";
-export { InstructionBuilder } from "./builder/InstructionBuilder";
-export { MessageCompiler } from "./builder/MessageCompiler";
-export { createBuiltTransaction, signTransaction, simulateBuilt, assertSimulationSucceeded } from "./builder/TransactionBuilder";
-export { confirmSignature } from "./builder/confirm";
-export type { BuildOptions, SendOptions } from "./builder/TransactionBuilder";
-export type { AccountMeta, BuiltTransaction, CompiledMessage, Instruction } from "./builder/types";
+export { BuilderClient } from "./builder/BuilderClient.js";
+export { TransactionBuilder } from "./builder/TransactionBuilder.js";
+export { InstructionBuilder } from "./builder/InstructionBuilder.js";
+export { MessageCompiler } from "./builder/MessageCompiler.js";
+export { createBuiltTransaction, signTransaction, simulateBuilt, assertSimulationSucceeded } from "./builder/TransactionBuilder.js";
+export { confirmSignature } from "./builder/confirm.js";
+export type { BuildOptions, SendOptions } from "./builder/TransactionBuilder.js";
+export type { AccountMeta, BuiltTransaction, CompiledMessage, Instruction } from "./builder/types.js";
 
-export { PaymentClient } from "./payments/PaymentClient";
-export { PaymentValidator } from "./payments/PaymentValidator";
-export { SolPaymentClient } from "./payments/SolPaymentClient";
-export { SplPaymentClient } from "./payments/SplPaymentClient";
-export type { PaymentExpectation, PaymentValidationRequest, PaymentValidationResult } from "./payments/PaymentValidator";
-export type { SolTransferRequest } from "./payments/SolPaymentClient";
-export type { SplTransferRequest } from "./payments/SplPaymentClient";
+export { PaymentClient } from "./payments/PaymentClient.js";
+export { PaymentValidator } from "./payments/PaymentValidator.js";
+export { SolPaymentClient } from "./payments/SolPaymentClient.js";
+export { SplPaymentClient } from "./payments/SplPaymentClient.js";
+export type { PaymentExpectation, PaymentValidationRequest, PaymentValidationResult } from "./payments/PaymentValidator.js";
+export type { SolTransferRequest } from "./payments/SolPaymentClient.js";
+export type { SplTransferRequest } from "./payments/SplPaymentClient.js";
 
-export { TokenClient } from "./tokens/TokenClient";
-export { MintClient } from "./tokens/MintClient";
-export { TransferClient } from "./tokens/TransferClient";
-export type { TokenTransferRequest } from "./tokens/TransferClient";
+export { TokenClient } from "./tokens/TokenClient.js";
+export { MintClient } from "./tokens/MintClient.js";
+export { TransferClient } from "./tokens/TransferClient.js";
+export type { TokenTransferRequest } from "./tokens/TransferClient.js";
 
-export { NftClient } from "./nft/NftClient";
-export type { NftAsset } from "./nft/NftClient";
+export { NftClient } from "./nft/NftClient.js";
+export type { NftAsset } from "./nft/NftClient.js";
 
-export { ProgramClient } from "./programs/ProgramClient";
+export { ProgramClient } from "./programs/ProgramClient.js";
 
-export { SolanaSigner } from "./wallet/Signer";
-export { KeypairSigner, verifySignature } from "./wallet/KeypairSigner";
-export { WalletAdapter } from "./wallet/WalletAdapter";
+export { SolanaSigner } from "./wallet/Signer.js";
+export { KeypairSigner, verifySignature } from "./wallet/KeypairSigner.js";
+export { WalletAdapter } from "./wallet/WalletAdapter.js";
 
 export type {
   AccountInfo,
@@ -93,7 +93,7 @@ export type {
   TokenAmount,
   TokenBalance,
   TransactionStatusInfo,
-} from "./types/index";
+} from "./types/index.js";
 
 export {
   RpcError,
@@ -106,14 +106,14 @@ export {
   SubscriptionError,
   UnsupportedOperationError,
   SolanaSdkError,
-} from "./errors/index";
-export type { SolanaSdkErrorCode } from "./errors/index";
+} from "./errors/index.js";
+export type { SolanaSdkErrorCode } from "./errors/index.js";
 
 export {
   base58Encode,
   base58Decode,
   isBase58,
-} from "./utils/base58";
+} from "./utils/base58.js";
 export {
   base64Encode,
   base64Decode,
@@ -121,14 +121,14 @@ export {
   encodeLength,
   encodeU32LE,
   encodeU64LE,
-} from "./utils/bytes";
+} from "./utils/bytes.js";
 export {
   solToLamports,
   lamportsToSol,
   toBaseUnits,
   fromBaseUnits,
   LAMPORTS_PER_SOL,
-} from "./utils/amount";
+} from "./utils/amount.js";
 export {
   isValidAddress,
   assertAddress,
@@ -142,10 +142,10 @@ export {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   MEMO_PROGRAM_ID,
   COMPUTE_BUDGET_PROGRAM_ID,
-} from "./utils/address";
+} from "./utils/address.js";
 export {
   findProgramAddress,
   derivePda,
   createProgramAddress,
   isOnCurve,
-} from "./utils/pda";
+} from "./utils/pda.js";

@@ -1,12 +1,12 @@
-import type { BuilderClient } from "../builder/BuilderClient";
-import { InstructionBuilder } from "../builder/InstructionBuilder";
-import type { TransactionBuilder } from "../builder/TransactionBuilder";
-import type { ReaderClient } from "../reader/ReaderClient";
-import type { Address, MintInfo, TokenBalance } from "../types/index";
-import { assertAddress, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address";
-import { fromBaseUnits, toBaseUnits } from "../utils/amount";
-import { MintClient } from "./MintClient";
-import { TransferClient, type TokenTransferRequest } from "./TransferClient";
+import type { BuilderClient } from "../builder/BuilderClient.js";
+import { InstructionBuilder } from "../builder/InstructionBuilder.js";
+import type { TransactionBuilder } from "../builder/TransactionBuilder.js";
+import type { ReaderClient } from "../reader/ReaderClient.js";
+import type { Address, MintInfo, TokenBalance } from "../types/index.js";
+import { assertAddress, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address.js";
+import { fromBaseUnits, toBaseUnits } from "../utils/amount.js";
+import { MintClient } from "./MintClient.js";
+import { TransferClient, type TokenTransferRequest } from "./TransferClient.js";
 
 /**
  * `solana.tokens` — SPL token reads and transaction builders.

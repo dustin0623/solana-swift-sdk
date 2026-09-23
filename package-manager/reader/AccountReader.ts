@@ -1,8 +1,8 @@
-import type { RpcClient } from "../rpc/RpcClient";
-import type { RpcAccountInfo, CommitmentConfig, RpcKeyedAccount } from "../rpc/types";
-import type { AccountInfo, Address } from "../types/index";
-import { assertAddress } from "../utils/address";
-import { base64Decode } from "../utils/bytes";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { RpcAccountInfo, CommitmentConfig, RpcKeyedAccount } from "../rpc/types.js";
+import type { AccountInfo, Address } from "../types/index.js";
+import { assertAddress } from "../utils/address.js";
+import { base64Decode } from "../utils/bytes.js";
 
 /** Reads raw and parsed account state. */
 export class AccountReader {

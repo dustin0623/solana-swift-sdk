@@ -1,4 +1,4 @@
-import type { Commitment } from "../types/index";
+import type { Commitment } from "../types/index.js";
 
 /** Every RPC response that carries a context slot. */
 export interface RpcResponse<T> {

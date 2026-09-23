@@ -1,6 +1,6 @@
-import type { RpcClient } from "../rpc/RpcClient";
-import type { CommitmentConfig } from "../rpc/types";
-import type { BlockSummary, Signature } from "../types/index";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { CommitmentConfig } from "../rpc/types.js";
+import type { BlockSummary, Signature } from "../types/index.js";
 
 /** Block reads. Defaults to signature-level detail to keep payloads small. */
 export class BlockReader {

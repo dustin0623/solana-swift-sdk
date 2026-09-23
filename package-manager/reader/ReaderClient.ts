@@ -1,5 +1,5 @@
-import type { RpcClient } from "../rpc/RpcClient";
-import type { CommitmentConfig } from "../rpc/types";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { CommitmentConfig } from "../rpc/types.js";
 import type {
   AccountInfo,
   Address,
@@ -9,12 +9,12 @@ import type {
   Signature,
   SignatureRecord,
   TokenBalance,
-} from "../types/index";
-import { AccountReader } from "./AccountReader";
-import { BalanceReader } from "./BalanceReader";
-import { BlockReader } from "./BlockReader";
-import { SlotReader } from "./SlotReader";
-import { TransactionReader } from "./TransactionReader";
+} from "../types/index.js";
+import { AccountReader } from "./AccountReader.js";
+import { BalanceReader } from "./BalanceReader.js";
+import { BlockReader } from "./BlockReader.js";
+import { SlotReader } from "./SlotReader.js";
+import { TransactionReader } from "./TransactionReader.js";
 
 /**
  * The reader surface: `solana.reader.*`.

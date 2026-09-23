@@ -1,6 +1,6 @@
-import { ValidationError } from "../errors/index";
-import type { Address } from "../types/index";
-import type { SolanaSigner } from "./Signer";
+import { ValidationError } from "../errors/index.js";
+import type { Address } from "../types/index.js";
+import type { SolanaSigner } from "./Signer.js";
 
 /**
  * The subset of a browser wallet this adapter needs.

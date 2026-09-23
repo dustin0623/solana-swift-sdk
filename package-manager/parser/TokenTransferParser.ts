@@ -1,7 +1,7 @@
-import type { RpcTokenBalance } from "../rpc/types";
-import type { Address, ParsedInstruction, SplTransfer } from "../types/index";
-import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address";
-import { fromBaseUnits } from "../utils/amount";
+import type { RpcTokenBalance } from "../rpc/types.js";
+import type { Address, ParsedInstruction, SplTransfer } from "../types/index.js";
+import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address.js";
+import { fromBaseUnits } from "../utils/amount.js";
 
 interface TokenInstructionInfo {
   source?: string;
