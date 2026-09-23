@@ -12,7 +12,7 @@ interface DocShellProps {
 export function DocShell({ children }: DocShellProps) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const sidebarOpen = useSidebarOpen();
-  const isDocs = pathname.startsWith("/docs/");
+  const isDocs = pathname.startsWith("/docs");
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -82,7 +82,7 @@ export function DocShell({ children }: DocShellProps) {
                 <Boxes className="size-3.5" /> API Reference
               </Link>
               <Link
-                to="/playground"
+                to="/docs/playground"
                 className="flex h-full items-center border-b-2 border-transparent font-mono text-[10px] uppercase tracking-[0.18em] text-chrome-muted transition-colors hover:text-chrome-foreground"
                 activeProps={{ className: "flex h-full items-center border-b-2 border-primary font-mono text-[10px] uppercase tracking-[0.18em] text-chrome-foreground" }}
               >

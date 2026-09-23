@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlaygroundRouteImport } from './routes/playground'
 import { Route as DocsSlugRouteImport } from './routes/docs.$slug'
+import { Route as DocsPlaygroundIndexRouteImport } from './routes/docs.playground.index'
+import { Route as DocsPlaygroundToolRouteImport } from './routes/docs.playground.$tool'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +30,69 @@ const DocsSlugRoute = DocsSlugRouteImport.update({
   path: '/docs/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocsPlaygroundIndexRoute = DocsPlaygroundIndexRouteImport.update({
+  id: '/docs/playground/',
+  path: '/docs/playground/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsPlaygroundToolRoute = DocsPlaygroundToolRouteImport.update({
+  id: '/docs/playground/$tool',
+  path: '/docs/playground/$tool',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/playground': typeof PlaygroundRoute
   '/docs/$slug': typeof DocsSlugRoute
+  '/docs/playground/$tool': typeof DocsPlaygroundToolRoute
+  '/docs/playground/': typeof DocsPlaygroundIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/playground': typeof PlaygroundRoute
   '/docs/$slug': typeof DocsSlugRoute
+  '/docs/playground/$tool': typeof DocsPlaygroundToolRoute
+  '/docs/playground': typeof DocsPlaygroundIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/playground': typeof PlaygroundRoute
   '/docs/$slug': typeof DocsSlugRoute
+  '/docs/playground/$tool': typeof DocsPlaygroundToolRoute
+  '/docs/playground/': typeof DocsPlaygroundIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/playground' | '/docs/$slug'
+  fullPaths:
+    | '/'
+    | '/playground'
+    | '/docs/$slug'
+    | '/docs/playground/$tool'
+    | '/docs/playground/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/playground' | '/docs/$slug'
-  id: '__root__' | '/' | '/playground' | '/docs/$slug'
+  to:
+    | '/'
+    | '/playground'
+    | '/docs/$slug'
+    | '/docs/playground/$tool'
+    | '/docs/playground'
+  id:
+    | '__root__'
+    | '/'
+    | '/playground'
+    | '/docs/$slug'
+    | '/docs/playground/$tool'
+    | '/docs/playground/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PlaygroundRoute: typeof PlaygroundRoute
   DocsSlugRoute: typeof DocsSlugRoute
+  DocsPlaygroundToolRoute: typeof DocsPlaygroundToolRoute
+  DocsPlaygroundIndexRoute: typeof DocsPlaygroundIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +118,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/docs/playground/': {
+      id: '/docs/playground/'
+      path: '/docs/playground'
+      fullPath: '/docs/playground/'
+      preLoaderRoute: typeof DocsPlaygroundIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs/playground/$tool': {
+      id: '/docs/playground/$tool'
+      path: '/docs/playground/$tool'
+      fullPath: '/docs/playground/$tool'
+      preLoaderRoute: typeof DocsPlaygroundToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +139,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PlaygroundRoute: PlaygroundRoute,
   DocsSlugRoute: DocsSlugRoute,
+  DocsPlaygroundToolRoute: DocsPlaygroundToolRoute,
+  DocsPlaygroundIndexRoute: DocsPlaygroundIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

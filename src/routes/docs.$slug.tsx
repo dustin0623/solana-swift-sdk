@@ -62,7 +62,7 @@ function DocPage() {
               <h1 className="doc-title mt-3 font-display font-semibold">{doc.title}</h1>
               <p className="mt-3 max-w-2xl text-[15px] leading-7 text-muted-foreground">{doc.summary}</p>
               <Link
-                to="/playground"
+                to="/docs/playground"
                 className="mt-5 inline-flex items-center gap-2 rounded border border-primary/50 bg-primary/5 px-3 py-1.5 font-mono text-xs text-primary transition-colors hover:bg-primary/10"
               >
                 <FlaskConical className="size-3.5" /> Open the playground <ArrowRight className="size-3.5" />
