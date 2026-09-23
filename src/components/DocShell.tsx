@@ -17,20 +17,12 @@ export function DocShell({ children }: DocShellProps) {
             SolanaXPH SDK
           </Link>
           <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-            <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/docs/$slug" params={{ slug: "introduction" }} className="text-muted-foreground hover:text-foreground transition-colors">
               Docs
             </Link>
             <Link to="/playground" className="text-muted-foreground hover:text-foreground transition-colors">
               Playground
             </Link>
-            <a
-              href="https://github.com/solanaxph/sdk"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              target="_blank"
-              rel="noreferrer"
-            >
-              GitHub
-            </a>
           </nav>
         </div>
       </header>
