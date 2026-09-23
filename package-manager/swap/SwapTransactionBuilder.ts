@@ -3,7 +3,7 @@
  * TransactionBuilder. Never signs, never broadcasts.
  */
 import type { BuilderClient } from "../builder/BuilderClient.js";
-import { InstructionBuilder } from "../builder/InstructionBuilder.js";
+import { InstructionBuilder, type TokenProgramId } from "../builder/InstructionBuilder.js";
 import type { Instruction } from "../builder/types.js";
 import { ValidationError, UnsupportedOperationError } from "../errors/index.js";
 import type { RpcClient } from "../rpc/RpcClient.js";
@@ -44,7 +44,7 @@ export function assertQuoteShape(q: SwapQuote): void {
 export class SwapTransactionBuilder {
   constructor(private readonly rpc: RpcClient, private readonly builder: BuilderClient) {}
 
-  private async tokenProgramOf(mint: Address): Promise<TokenProgram> {
+  private async tokenProgramOf(mint: Address): Promise<TokenProgramId> {
     if (mint === WRAPPED_SOL_MINT) return TOKEN_PROGRAM_ID;
     const info = await this.rpc.getAccountInfo(mint);
     const owner = (info.value as { owner?: string } | null)?.owner;
@@ -52,7 +52,7 @@ export class SwapTransactionBuilder {
     if (owner !== TOKEN_PROGRAM_ID && owner !== TOKEN_2022_PROGRAM_ID) {
       throw new ValidationError(`${mint} is not an SPL token mint`, "mint");
     }
-    return owner as TokenProgram;
+    return owner as TokenProgramId;
   }
 
   private async exists(address: Address): Promise<boolean> {
