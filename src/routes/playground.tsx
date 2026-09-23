@@ -193,25 +193,35 @@ function RpcCard({ client }: { client: SolanaClient }) {
 function TokenCard({ client, network }: { client: SolanaClient; network: LiveNetwork }) {
   const usdc = network === "mainnet" ? "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" : "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU";
   const [mintAddress, setMint] = useState(usdc);
-  const r = useRunner();
+  const [owner, setOwner] = useState("");
+  const info = useRunner();
+  const bal = useRunner();
+  const supply = useRunner();
   return (
-    <Card title="Token mint" code={`const info = await solana.tokens.getMint(mint);\n// decimals, supply (raw units), program: "spl-token" | "spl-token-2022"`}>
-      <div className="flex gap-2">
-        <input className={input} value={mintAddress} onChange={(e) => setMint(e.target.value.trim())} aria-label="Mint address" />
-        <button
-          className={btn}
-          disabled={!mintAddress || r.busy}
-          onClick={() =>
-            void r.run(async () => {
-              const { raw: _raw, ...info } = await client.tokens.getMint(mintAddress);
-              return info;
-            })
-          }
-        >
-          Get mint
+    <Card
+      title="Token"
+      code={`const token = await sdk.tokens.get(mint);   // decimals, supply, program\nconst b = await sdk.tokens.balance({ owner, mint });\nawait sdk.tokens.supply(mint);`}
+    >
+      <input className={input} value={mintAddress} onChange={(e) => setMint(e.target.value.trim())} aria-label="Mint address" placeholder="Mint address" />
+      <div className="mt-2 flex flex-wrap gap-2">
+        <button className={btn} disabled={!mintAddress || info.busy} onClick={() => void info.run(async () => { const token = await client.tokens.get(mintAddress); const { raw: _raw, ...mintRest } = token.mint; return { asset: token.asset, mint: mintRest }; })}>
+          Get token
+        </button>
+        <button className={btn} disabled={!mintAddress || supply.busy} onClick={() => void supply.run(async () => (await client.tokens.supply(mintAddress)).amount)}>
+          Supply
         </button>
       </div>
-      <Status {...r} />
+      <input className={`${input} mt-2`} value={owner} onChange={(e) => setOwner(e.target.value.trim())} aria-label="Wallet address" placeholder="Wallet address (optional)" />
+      <button
+        className={`${btn} mt-2`}
+        disabled={!mintAddress || !owner || bal.busy}
+        onClick={() => void bal.run(async () => (await client.tokens.balance({ owner, mint: mintAddress })).amount)}
+      >
+        Wallet balance
+      </button>
+      <Status {...info} />
+      <Status {...supply} />
+      <Status {...bal} />
     </Card>
   );
 }
