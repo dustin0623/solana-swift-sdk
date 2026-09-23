@@ -26,5 +26,8 @@ export default defineConfig({
         },
       ],
     },
+    optimizeDeps: {
+      exclude: ["@noble/curves", "@noble/hashes"],
+    },
   },
 });
