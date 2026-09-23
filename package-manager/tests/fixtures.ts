@@ -1,25 +1,34 @@
 /**
  * Test fixtures for transaction parsing and reader tests.
  *
- * These are realistic `getTransaction` JSON-RPC shapes with fake addresses.
- * They exercise legacy and versioned transactions, inner instructions, SPL
- * transfers, failures and address lookup tables without touching the network.
+ * These are realistic `getTransaction` JSON-RPC shapes with deterministic but
+ * fake addresses. They exercise legacy and versioned transactions, inner
+ * instructions, SPL transfers, failures and address lookup tables without
+ * touching the network.
  */
 
+import { base58Encode } from "../utils/base58.js";
 import type { RpcTransaction } from "../rpc/types.js";
 
 const SYSTEM = "11111111111111111111111111111111";
 const TOKEN = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+
+// Deterministic 32-byte base58 addresses.
+const byte = (n: number) => base58Encode(new Uint8Array(32).fill(n));
+export const alice = byte(1);
+export const bob = byte(2);
+export const carol = byte(3);
+export const mint = byte(4);
+export const aliceAta = byte(5);
+export const bobAta = byte(6);
+export const lookupAddr = byte(7);
+export const lookupTable = byte(8);
 
 export const SOL_TRANSFER_SIGNATURE = "soltransfer123456789".padEnd(87, "0");
 export const FAILED_TX_SIGNATURE = "failedtx123456789".padEnd(87, "0");
 export const SPL_TRANSFER_SIGNATURE = "spltransfer123456789".padEnd(87, "0");
 export const INNER_IX_SIGNATURE = "innerix123456789".padEnd(87, "0");
 export const VERSIONED_SIGNATURE = "versioned123456789".padEnd(87, "0");
-
-const alice = "AlicePubkey111111111111111111111111111111111";
-const bob = "BobPubkey111111111111111111111111111111111111";
-const carol = "CarolPubkey111111111111111111111111111111111";
 
 export const successfulSolTransfer: RpcTransaction = {
   slot: 123456789,
@@ -89,13 +98,13 @@ export const splTransfer: RpcTransaction = {
     preTokenBalances: [
       {
         accountIndex: 1,
-        mint: "MintPubkey111111111111111111111111111111111",
+        mint,
         uiTokenAmount: { amount: "1000000000", decimals: 6, uiAmount: 1000, uiAmountString: "1000" },
         owner: alice,
       },
       {
         accountIndex: 2,
-        mint: "MintPubkey111111111111111111111111111111111",
+        mint,
         uiTokenAmount: { amount: "0", decimals: 6, uiAmount: 0, uiAmountString: "0" },
         owner: bob,
       },
@@ -103,13 +112,13 @@ export const splTransfer: RpcTransaction = {
     postTokenBalances: [
       {
         accountIndex: 1,
-        mint: "MintPubkey111111111111111111111111111111111",
+        mint,
         uiTokenAmount: { amount: "900000000", decimals: 6, uiAmount: 900, uiAmountString: "900" },
         owner: alice,
       },
       {
         accountIndex: 2,
-        mint: "MintPubkey111111111111111111111111111111111",
+        mint,
         uiTokenAmount: { amount: "100000000", decimals: 6, uiAmount: 100, uiAmountString: "100" },
         owner: bob,
       },
@@ -126,9 +135,9 @@ export const splTransfer: RpcTransaction = {
     message: {
       accountKeys: [
         { pubkey: alice, signer: true, writable: false },
-        { pubkey: "AliceATA11111111111111111111111111111111111", signer: false, writable: true },
-        { pubkey: "BobATA111111111111111111111111111111111111", signer: false, writable: true },
-        { pubkey: "MintPubkey111111111111111111111111111111111", signer: false, writable: false },
+        { pubkey: aliceAta, signer: false, writable: true },
+        { pubkey: bobAta, signer: false, writable: true },
+        { pubkey: mint, signer: false, writable: false },
         { pubkey: TOKEN, signer: false, writable: false },
       ],
       instructions: [
@@ -138,10 +147,10 @@ export const splTransfer: RpcTransaction = {
           parsed: {
             type: "transferChecked",
             info: {
-              source: "AliceATA11111111111111111111111111111111111",
-              destination: "BobATA111111111111111111111111111111111111",
+              source: aliceAta,
+              destination: bobAta,
               authority: alice,
-              mint: "MintPubkey111111111111111111111111111111111",
+              mint,
               tokenAmount: { amount: "100000000", decimals: 6 },
             },
           },
@@ -218,7 +227,7 @@ export const versionedTransaction: RpcTransaction = {
     preTokenBalances: [],
     postTokenBalances: [],
     innerInstructions: [],
-    loadedAddresses: { writable: ["LookupAddr111111111111111111111111111111111"], readonly: [] },
+    loadedAddresses: { writable: [lookupAddr], readonly: [] },
     logMessages: [
       "Program 11111111111111111111111111111111 invoke [1]",
       "Program 11111111111111111111111111111111 success",
@@ -232,7 +241,7 @@ export const versionedTransaction: RpcTransaction = {
         { pubkey: bob, signer: false, writable: true },
       ],
       addressTableLookups: [
-        { accountKey: "LookupTable111111111111111111111111111111111", writableIndexes: [0], readonlyIndexes: [] },
+        { accountKey: lookupTable, writableIndexes: [0], readonlyIndexes: [] },
       ],
       instructions: [
         {
