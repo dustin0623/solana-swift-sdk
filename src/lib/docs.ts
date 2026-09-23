@@ -147,6 +147,47 @@ meta.warnings; // non-fatal problems` },
     ],
   },
   {
+    slug: "token-discovery",
+    title: "Token Discovery",
+    group: "Domain APIs",
+    summary: "Searching and listing arbitrary tokens through pluggable providers.",
+    blocks: [
+      { text: "Token data answers \"tell me about this mint\". Discovery answers \"which tokens should I show?\". They are separate concerns, so discovery lives behind its own provider interface and never assumes a token came from SolanaXPH." },
+      { code: `const page = await sdk.tokens.search("bonk");
+page.items[0];      // normalized DiscoveredToken
+page.items[0].source; // { provider, origin: "on-chain" | "indexed" }` },
+      { text: "Every SolanaXPH client ships with the on-chain provider (\"rpc\"). It can resolve any mint address without an indexer, but it cannot search by symbol or name and cannot rank tokens — no such index exists on chain, so it reports those capabilities as false instead of faking them." },
+      { code: `import { StaticTokenListProvider } from "solanaxph-sdk";
+
+sdk.tokens.discovery.register(
+  new StaticTokenListProvider({
+    name: "my-indexer",
+    attribution: "my market API",
+    entries: [{ mint, symbol: "BONK", decimals: 5, market: { currency: "USD", volume24h: 5e6 } }],
+  }),
+  { default: true },
+);` },
+      { text: "Write your own provider by implementing TokenDiscoveryProvider — name, capabilities, sorts, search(), list(), get(). Provider-specific types never leak through the core API; results are normalized into DiscoveredToken." },
+      { code: `sdk.tokens.discovery.capabilities();  // { search, trending, volume, liquidity, price, ... }
+sdk.tokens.discovery.sorts();         // only modes the active provider can serve
+sdk.tokens.discovery.supports("trending");` },
+      { text: "Listing uses the sort modes the active provider actually supports: new, trending, volume, liquidity or recent. Asking for an unsupported mode throws UnsupportedOperationError rather than returning invented numbers." },
+      { code: `await sdk.tokens.list({ sort: "new", limit: 20 });
+
+// Cursor pagination — cursors are opaque and provider-specific
+let cursor = null;
+do {
+  const page = await sdk.tokens.list({ sort: "volume", limit: 50, cursor });
+  cursor = page.nextCursor;
+} while (cursor);
+
+// Or iterate every page
+for await (const items of sdk.tokens.discovery.paginate("list", { sort: "volume" })) { /* … */ }` },
+      { note: "On-chain vs indexed: mint, decimals and program can be verified on chain. Price, volume, liquidity, market cap, createdAt and verification status always come from a third party — they are grouped under `market` and labelled `origin: \"indexed\"`, and the SDK never presents them as authoritative." },
+      { text: "Mint lookup is always available: sdk.tokens.discovery.get(mint) falls back to the on-chain provider even when an indexer is the default, so a failing API can never hide a real token." },
+    ],
+  },
+  {
     slug: "nfts",
     title: "NFTs",
     group: "Domain APIs",
