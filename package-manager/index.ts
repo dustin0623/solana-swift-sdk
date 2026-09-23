@@ -248,3 +248,8 @@ export type {
 } from "./pools/types.js";
 
 export * from "./swap/index.js";
+
+// ── Trading integration ───────────────────────────────────────────────
+export { TradingClient } from "./trading/TradingClient.js";
+export type { TradingDiscoverOptions } from "./trading/TradingClient.js";
+export type * from "./trading/types.js";
