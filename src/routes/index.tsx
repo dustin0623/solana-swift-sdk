@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { DocShell } from "../components/DocShell";
+import { DOCS } from "../lib/docs";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -78,8 +80,8 @@ const tx = await solana.payments.sol
             </li>
             <li>
               <strong>Builder</strong> — distinct stages: instruction → message →
-              signed transaction → signature → confirmation. Simulation always
-              precedes broadcast.
+              signed transaction → signature → confirmation. Simulate explicitly
+              before you broadcast.
             </li>
             <li>
               <strong>Payments</strong> — on-chain validation of SOL and SPL
@@ -100,6 +102,21 @@ const tx = await solana.payments.sol
             <li>Broadcast is explicit — the SDK never auto-sends.</li>
           </ul>
         </section>
+
+        <h2 className="mt-12 mb-4 text-2xl font-semibold">Browse the docs</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {DOCS.map((d) => (
+            <Link
+              key={d.slug}
+              to="/docs/$slug"
+              params={{ slug: d.slug }}
+              className="rounded-lg border border-border p-4 hover:bg-muted"
+            >
+              <div className="font-medium">{d.title}</div>
+              <div className="text-sm text-muted-foreground">{d.summary}</div>
+            </Link>
+          ))}
+        </div>
       </div>
     </DocShell>
   );

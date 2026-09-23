@@ -8,6 +8,9 @@ import { TokenClient } from "../tokens/TokenClient.js";
 import { MintClient } from "../tokens/MintClient.js";
 import { NftClient } from "../nft/NftClient.js";
 import { ProgramClient } from "../programs/ProgramClient.js";
+import { ParserClient } from "../parser/ParserClient.js";
+import { WalletClient } from "../wallet/WalletClient.js";
+import type { BlockReader } from "../reader/BlockReader.js";
 import { StreamEngine } from "../reader/stream/StreamEngine.js";
 import type { SolanaRpcSubscriptionProvider } from "../rpc/RpcProvider.js";
 import { WebSocketRpcProvider } from "../rpc/WebSocketRpcProvider.js";
@@ -53,6 +56,14 @@ export class SolanaClient {
   public readonly nft: NftClient;
   public readonly programs: ProgramClient;
   public readonly stream: StreamEngine;
+  /** Offline parsing of raw RPC payloads. */
+  public readonly parser: ParserClient;
+  /** Signer factories (server keypairs, browser wallets). */
+  public readonly wallet: WalletClient;
+  /** Shortcut for `reader.blocks`. */
+  public readonly blocks: BlockReader;
+  /** Label of the active RPC provider (e.g. "devnet", "helius", "mock"). */
+  public readonly providerName: string;
 
   constructor(options: SolanaClientOptions = {}) {
     const network = normalizeNetwork(options.network);
@@ -78,7 +89,11 @@ export class SolanaClient {
       defaultCommitment: options.defaultCommitment ?? "confirmed",
     });
 
+    this.providerName = provider.name;
     this.reader = new ReaderClient(this.rpc);
+    this.blocks = this.reader.blocks;
+    this.parser = new ParserClient();
+    this.wallet = new WalletClient();
     this.builder = new BuilderClient(this.rpc);
     this.tokens = new TokenClient(this.reader, this.builder, new MintClient(this.rpc));
     this.payments = new PaymentClient({
