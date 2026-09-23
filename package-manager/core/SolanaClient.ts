@@ -55,6 +55,12 @@ export class SolanaClient {
   public readonly tokens: TokenClient;
   public readonly nft: NftClient;
   public readonly programs: ProgramClient;
+  /**
+   * Pool and liquidity discovery ("where can this token trade?"), separate
+   * from token discovery ("which tokens exist?"). Ships with no DEX provider
+   * registered — register one for the protocols your app supports.
+   */
+  public readonly pools: PoolClient;
   public readonly stream: StreamEngine;
   /** Offline parsing of raw RPC payloads. */
   public readonly parser: ParserClient;
