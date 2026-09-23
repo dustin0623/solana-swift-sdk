@@ -71,10 +71,6 @@ export class TokenDiscoveryClient {
     return this;
   }
 
-  public list_providers(): string[] {
-    return [...this.providers.keys()];
-  }
-
   /** Registered provider names. */
   public get names(): string[] {
     return [...this.providers.keys()];
