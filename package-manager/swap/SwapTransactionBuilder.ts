@@ -44,7 +44,7 @@ export function assertQuoteShape(q: SwapQuote): void {
 export class SwapTransactionBuilder {
   constructor(private readonly rpc: RpcClient, private readonly builder: BuilderClient) {}
 
-  private async tokenProgramOf(mint: Address): Promise<Address> {
+  private async tokenProgramOf(mint: Address): Promise<TokenProgram> {
     if (mint === WRAPPED_SOL_MINT) return TOKEN_PROGRAM_ID;
     const info = await this.rpc.getAccountInfo(mint);
     const owner = (info.value as { owner?: string } | null)?.owner;
@@ -52,7 +52,7 @@ export class SwapTransactionBuilder {
     if (owner !== TOKEN_PROGRAM_ID && owner !== TOKEN_2022_PROGRAM_ID) {
       throw new ValidationError(`${mint} is not an SPL token mint`, "mint");
     }
-    return owner;
+    return owner as TokenProgram;
   }
 
   private async exists(address: Address): Promise<boolean> {
@@ -133,7 +133,7 @@ export class SwapTransactionBuilder {
     }
     if (!destExists) {
       pre.push(InstructionBuilder.createAssociatedTokenAccount({
-        payer: feePayer, owner: recipient, mint: quote.outputMint, programId: outProg as never,
+        payer: feePayer, owner: recipient, mint: quote.outputMint, programId: outProg,
       }));
       created.push(destination);
       if (unwrapSol) post.push(InstructionBuilder.closeTokenAccount({ account: destination, destination: owner, owner }));
