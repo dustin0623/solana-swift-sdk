@@ -20,7 +20,7 @@ describe("TransactionBuilder", () => {
       .withBlockhash(blockhash)
       .build();
 
-    expect(tx.message.version).toBe("legacy");
+    expect(tx.message.version).toBe(0);
     expect(tx.message.accountKeys).toContain(alice.address);
     expect(tx.message.accountKeys).toContain(bob);
     expect(tx.isFullySigned()).toBe(false);
@@ -35,7 +35,7 @@ describe("TransactionBuilder", () => {
     const rpc = new RpcClient({ provider });
     await expect(
       new TransactionBuilder(rpc).transfer({ to: bob, lamports: 100n }).withBlockhash(blockhash).build(),
-    ).rejects.toThrow();
+    ).rejects.toThrow("fee payer");
   });
 
   it("can add custom instructions", async () => {

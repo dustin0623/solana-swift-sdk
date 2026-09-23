@@ -71,12 +71,14 @@ describe("PaymentValidator", () => {
         context: { slot: 1 },
         value: [{ slot: 123456790, confirmations: null, confirmationStatus: "finalized", err: null }],
       },
-      getParsedAccountInfo: {
+      getAccountInfo: {
         context: { slot: 1 },
         value: {
           owner: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
           lamports: 1461600,
           data: { parsed: { type: "mint", info: { decimals: 6, supply: "1000000000000" } }, program: "spl-token", space: 82 },
+          executable: false,
+          rentEpoch: 0,
         },
       },
     });
