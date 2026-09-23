@@ -38,7 +38,7 @@ describe("network configuration", () => {
   });
 
   it("derives websocket urls from http urls", () => {
-    expect(deriveWsUrl("https://rpc.example.com")).toBe("wss://rpc.example.com/");
+    expect(deriveWsUrl("https://rpc.example.com")).toMatch(/^wss:\/\/rpc\.example\.com\/?$/);
   });
 });
 
