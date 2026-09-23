@@ -77,8 +77,10 @@ export const failedTransaction: RpcTransaction = {
     signatures: [FAILED_TX_SIGNATURE],
   },
   meta: {
-    ...successfulSolTransfer.meta,
-    fee: successfulSolTransfer.meta.fee,
+    ...successfulSolTransfer.meta!,
+    fee: successfulSolTransfer.meta!.fee,
+    preBalances: successfulSolTransfer.meta!.preBalances,
+    postBalances: successfulSolTransfer.meta!.postBalances,
     err: { InstructionError: [0, "Custom"] },
     logMessages: [
       "Program 11111111111111111111111111111111 invoke [1]",
