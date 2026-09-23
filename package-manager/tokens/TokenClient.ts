@@ -6,6 +6,16 @@ import type { Address, MintInfo, TokenBalance } from "../types/index.js";
 import { assertAddress, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address.js";
 import { fromBaseUnits, toBaseUnits } from "../utils/amount.js";
 import { MintClient } from "./MintClient.js";
+import type { CommitmentConfig } from "../rpc/types.js";
+import type { TokenAccountsQuery, TokenMetadataOptions } from "../reader/TokenReader.js";
+import type {
+  NativeSol,
+  Token,
+  TokenAccount,
+  TokenBalanceSummary,
+  TokenMetadata,
+  TokenSupply,
+} from "../types/token.js";
 import { TransferClient, type TokenTransferRequest } from "./TransferClient.js";
 
 /**
@@ -57,8 +67,41 @@ export class TokenClient {
     };
   }
 
-  public accounts(owner: Address, mint?: Address): Promise<TokenBalance[]> {
-    return this.reader.tokenBalances(owner, mint ? { mint } : undefined);
+  /** Mint facts + asset kind for any SPL Token / Token-2022 mint. */
+  public get(mint: Address, config?: CommitmentConfig): Promise<Token> {
+    return this.reader.tokens.get(mint, config);
+  }
+
+  /** Exact balance of a mint (all token accounts summed) or native SOL via `NATIVE_SOL`. */
+  public balance(
+    query: { owner: Address; mint: Address | NativeSol } & CommitmentConfig,
+  ): Promise<TokenBalanceSummary> {
+    return this.reader.tokens.balance(query);
+  }
+
+  /** Current supply straight from `getTokenSupply`. */
+  public supply(mint: Address, config?: CommitmentConfig): Promise<TokenSupply> {
+    return this.reader.tokens.supply(mint, config);
+  }
+
+  /** On-chain metadata plus optional validated off-chain JSON. Never throws for missing metadata. */
+  public metadata(mint: Address, options?: TokenMetadataOptions): Promise<TokenMetadata> {
+    return this.reader.tokens.metadata(mint, options);
+  }
+
+  /**
+   * Token accounts for an owner across SPL Token and Token-2022.
+   * The legacy `(owner, mint?)` form returns the older TokenBalance shape and
+   * only scans classic SPL Token when no mint is given.
+   */
+  public accounts(query: TokenAccountsQuery): Promise<TokenAccount[]>;
+  public accounts(owner: Address, mint?: Address): Promise<TokenBalance[]>;
+  public accounts(
+    query: TokenAccountsQuery | Address,
+    mint?: Address,
+  ): Promise<TokenAccount[] | TokenBalance[]> {
+    if (typeof query === "object") return this.reader.tokens.accounts(query);
+    return this.reader.tokenBalances(query, mint ? { mint } : undefined);
   }
 
   public transfer(request: TokenTransferRequest): Promise<TransactionBuilder> {

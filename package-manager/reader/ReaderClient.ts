@@ -15,6 +15,7 @@ import { BalanceReader } from "./BalanceReader.js";
 import { BlockReader } from "./BlockReader.js";
 import { SlotReader } from "./SlotReader.js";
 import { TransactionReader } from "./TransactionReader.js";
+import { TokenReader } from "./TokenReader.js";
 
 /**
  * The reader surface: `solana.reader.*`.
@@ -28,6 +29,8 @@ export class ReaderClient {
   public readonly transactions: TransactionReader;
   public readonly blocks: BlockReader;
   public readonly slots: SlotReader;
+  /** SPL Token / Token-2022 reads: mints, supply, accounts, balances, metadata. */
+  public readonly tokens: TokenReader;
 
   constructor(rpc: RpcClient) {
     this.accounts = new AccountReader(rpc);
@@ -35,6 +38,7 @@ export class ReaderClient {
     this.transactions = new TransactionReader(rpc);
     this.blocks = new BlockReader(rpc);
     this.slots = new SlotReader(rpc);
+    this.tokens = new TokenReader(rpc);
   }
 
   public balance(address: Address, config?: CommitmentConfig): Promise<Balance> {
