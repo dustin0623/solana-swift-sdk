@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { useRouter, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ChevronDown, FlaskConical, X } from "lucide-react";
 import { docsNav, isGroup, type NavEntry, type NavGroup, type NavItem } from "../lib/docs-nav";
@@ -10,6 +10,7 @@ function contains(entries: NavEntry[], pathname: string): boolean {
 }
 
 function ItemLink({ item, pathname }: { item: NavItem; pathname: string }) {
+  const router = useRouter();
   const active = item.to === pathname;
   return (
     <a
@@ -17,8 +18,7 @@ function ItemLink({ item, pathname }: { item: NavItem; pathname: string }) {
       onClick={(event) => {
         event.preventDefault();
         setSidebarOpen(null);
-        window.history.pushState(null, "", item.to);
-        window.dispatchEvent(new PopStateEvent("popstate"));
+        void router.navigate({ href: item.to });
       }}
       aria-current={active ? "page" : undefined}
       className={`relative flex items-center gap-1.5 py-1.5 pl-3 pr-2 text-[13px] leading-5 transition-colors ${
