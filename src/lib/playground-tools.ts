@@ -9,6 +9,7 @@ export interface PlaygroundTool {
 }
 
 export const PLAYGROUND_TOOLS: PlaygroundTool[] = [
+  { id: "configurations", title: "Configurations", summary: "Save a network, RPC URL, headers, commitment and test keys in this browser; every playground uses them.", doc: "configuration", live: false },
   { id: "rpc", title: "RPC calls", summary: "Call getSlot and getLatestBlockhash against public Solana RPC.", doc: "rpc", live: true },
   { id: "accounts", title: "Account lookup", summary: "Read an account's balance, owner and data size through the reader layer.", doc: "readers", live: true },
   { id: "transactions", title: "Transaction explorer", summary: "Fetch and parse a live transaction by signature, read-only.", doc: "transactions", live: true },
