@@ -13,3 +13,5 @@
 - [x] Tests with MockRpcProvider + fixtures
 - [x] Root README, .env.example, final git/ref verification
 - [x] Phase 1 (tokens): token reader, metadata, discovery, tests (62 passing), docs + playground
+- [x] Phase 2 (token discovery): provider abstraction, rpc + static providers, cursor pagination, capabilities, tests (85 passing), docs
+- [x] Phase 3 (pool discovery): PoolProvider abstraction, normalized LiquidityPool, find/get/rank/verify, static provider, tests (118 passing), docs

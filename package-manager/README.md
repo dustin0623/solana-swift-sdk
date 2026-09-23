@@ -44,3 +44,26 @@ Providers declare what they can actually do (`provider.capabilities`,
 `UnsupportedOperationError` instead of returning invented data. Every result
 carries `source.origin`: `"on-chain"` for verifiable chain state, `"indexed"`
 for third-party price, volume, liquidity, market cap and verification data.
+
+## Pool and liquidity discovery
+
+Token discovery ≠ pool discovery. A token can exist with no usable pool at
+all, so "where can this trade?" is its own layer with its own providers.
+
+```ts
+await sdk.pools.find({ token: mint });                   // any pair
+await sdk.pools.find({ token: mint, pairedWith: SOL });  // token ↔ SOL
+await sdk.pools.get(poolAddress);                        // normalized details
+await sdk.pools.best(mint);                              // find + rank
+```
+
+`PoolProvider` (name, dex, capabilities, `findPools`, `getPool`) keeps the SDK
+protocol-agnostic — Raydium, Orca, Meteora, other AMMs, an indexer or custom
+venues all normalize into the same `LiquidityPool`. No DEX provider ships by
+default; `StaticPoolProvider` covers curated lists, cached snapshots and tests.
+
+Liquidity is never collapsed into one number: raw reserves, `indexedUsd`,
+`tvlUsd` and `estimatedUsd` are separate, each tagged `on-chain`, `indexed` or
+`derived`. Unknown fields stay `null`. `sdk.pools.rank()` scores pools by
+liquidity, volume, fee, an price-impact heuristic and provider preference —
+venue-selection groundwork only, not routing, quoting or execution.

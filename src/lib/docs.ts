@@ -188,6 +188,45 @@ for await (const items of sdk.tokens.discovery.paginate("list", { sort: "volume"
     ],
   },
   {
+    slug: "pool-discovery",
+    title: "Pool & Liquidity Discovery",
+    group: "Domain APIs",
+    summary: "Finding the venues where a token can actually trade.",
+    blocks: [
+      { text: "Token discovery is not pool discovery. Token discovery answers \"which tokens exist?\"; pool discovery answers \"where, if anywhere, can this token trade?\". A token can exist perfectly well with no usable pool at all, so an empty result means no registered provider knows of a pool — not that the token is fake." },
+      { code: `const page = await sdk.pools.find({ token: mint });        // any pair
+await sdk.pools.find({ token: mint, pairedWith: SOL_MINT }); // token ↔ SOL
+await sdk.pools.find({ token: mint, pairedWith: USDC_MINT }); // token ↔ USDC
+await sdk.pools.find({ token: mint, dex: "raydium" });       // one protocol
+
+const pool = await sdk.pools.get(poolAddress);               // normalized details` },
+      { text: "Pools live behind a provider interface — name, dex, capabilities, findPools(), getPool() — so Raydium, Orca, Meteora, other AMMs, an indexer or your own custom venues all plug into the same API. No DEX provider is registered by default: SolanaXPH ships only the generic layer and StaticPoolProvider for curated lists, cached snapshots and tests, rather than shipping guessed protocol decoders." },
+      { code: `import { StaticPoolProvider } from "solanaxph-sdk";
+
+sdk.pools.register(new StaticPoolProvider({
+  name: "my-indexer",
+  attribution: "my pool API",
+  pools: [{ address, dex: "raydium", tokenA: { mint, symbol: "BONK", decimals: 5 }, tokenB: { mint: SOL_MINT, decimals: 9 }, liquidityUsd: 250000, feeBps: 25 }],
+}));
+
+sdk.pools.capabilities();        // union across registered providers
+sdk.pools.supports("reserves");  // false when nobody can supply them` },
+      { note: "Liquidity is reported in four distinct forms and never collapsed into one number: raw reserves (base units as reported), indexedUsd (third-party figure), tvlUsd (third-party figure) and estimatedUsd (derived by calculation). Each carries origin: \"on-chain\", \"indexed\" or \"derived\", so an estimate is never presented as an on-chain fact." },
+      { text: "Every field a provider does not supply stays null — reserves, price, fee, programId and creation info are never invented. sdk.pools.verify(pool) checks the pool address against chain state and reports whether the account exists and whether its owning program matches what the provider claimed." },
+      { code: `const ranked = sdk.pools.rank(page.items, {
+  prefer: ["raydium"],
+  minLiquidityUsd: 10_000,
+  amountUsd: 500,           // price-impact heuristic, never a quote
+});
+ranked[0].score;      // 0..1, comparable within one ranking call
+ranked[0].confidence; // share of the weighting backed by real data
+ranked[0].factors;    // liquidity / volume / fee / priceImpact / preference
+
+await sdk.pools.best(mint); // find + rank in one call` },
+      { note: "Ranking is venue-selection groundwork, not routing. The SDK does not quote, split, hop, buy, sell or execute anything." },
+    ],
+  },
+  {
     slug: "nfts",
     title: "NFTs",
     group: "Domain APIs",
