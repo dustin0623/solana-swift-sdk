@@ -37,10 +37,17 @@ export const docsNav: NavSection[] = [
     items: [doc("introduction"), doc("installation"), doc("quick-start"), { title: "Playground overview", to: "/docs/playground", playground: true }],
   },
   {
+    title: "Configuration",
+    items: [
+      { title: "Basics", items: [doc("configuration"), doc("networks"), tryIt("rpc")] },
+      { title: "Providers", items: [doc("providers", "Provider model"), doc("helius", "Helius (optional)")] },
+    ],
+  },
+  {
     title: "Core Solana",
     items: [
       doc("architecture"),
-      { title: "RPC", items: [doc("rpc", "RPC client"), doc("networks"), tryIt("rpc")] },
+      { title: "RPC", items: [doc("rpc", "RPC client")] },
       { title: "Readers", items: [doc("readers"), tryIt("accounts")] },
       { title: "Transactions", items: [doc("transactions", "Transactions & parsing"), tryIt("transactions")] },
     ],
@@ -59,7 +66,6 @@ export const docsNav: NavSection[] = [
     ],
   },
   { title: "Signing & streaming", items: [doc("wallets"), doc("signing"), doc("streaming")] },
-  { title: "Providers", items: [doc("helius")] },
   { title: "Reference", items: [doc("api-reference"), doc("examples"), doc("security"), doc("faq")] },
 ];
 
