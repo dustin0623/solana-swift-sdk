@@ -39,7 +39,7 @@ export const docsNav: NavSection[] = [
   {
     title: "Configuration",
     items: [
-      { title: "Basics", items: [doc("configuration"), doc("networks"), tryIt("rpc")] },
+      { title: "Basics", items: [doc("configuration"), doc("networks"), tryIt("configurations"), tryIt("rpc")] },
       { title: "Providers", items: [doc("providers", "Provider model"), doc("helius", "Helius (optional)")] },
     ],
   },
