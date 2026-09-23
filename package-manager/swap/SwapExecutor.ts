@@ -26,7 +26,7 @@ export function classifySolanaFailure(error: unknown, logs: readonly string[] = 
     return "blockhash_expired";
   }
   if (
-    text.includes("insufficientfundsforfee") ||
+    text.includes("insufficientfunds") ||
     text.includes("insufficient funds") ||
     text.includes("insufficient lamports") ||
     text.includes("insufficientfundsforrent")
