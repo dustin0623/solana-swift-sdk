@@ -127,7 +127,7 @@ function Playground() {
           >
             Parse {SOL_TRANSFER_SIGNATURE.slice(0, 16)}…
           </button>
-          {tx && <Output value={tx} />}
+          {tx !== null ? <Output value={tx} /> : null}
         </Card>
 
         <Card title="Derive a PDA">
@@ -178,7 +178,7 @@ function Playground() {
           >
             Validate SOL payment
           </button>
-          {paymentResult && <Output value={paymentResult} />}
+          {paymentResult !== null ? <Output value={paymentResult} /> : null}
         </Card>
       </div>
     </DocShell>
