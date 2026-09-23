@@ -189,6 +189,7 @@ export const transactionWithInnerInstructions: RpcTransaction = {
   },
   meta: {
     ...successfulSolTransfer.meta,
+    fee: successfulSolTransfer.meta.fee,
     err: null,
     preBalances: [2000000, 0, 0],
     postBalances: [900000, 1000000, 100000],
