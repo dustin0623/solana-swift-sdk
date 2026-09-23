@@ -94,3 +94,81 @@ export interface SwapQuoteProvider {
   readonly name: string;
   quote(request: ResolvedQuoteRequest): Promise<SwapQuote | null>;
 }
+
+/* ── Phase 5: transaction construction ─────────────────────────────── */
+
+/** Context handed to a provider to produce protocol swap instructions. */
+export interface SwapInstructionContext {
+  quote: SwapQuote;
+  /** Wallet that owns the source tokens and signs the swap. */
+  owner: Address;
+  /** Token account the input is debited from (wSOL ATA when wrapping SOL). */
+  sourceAccount: Address;
+  /** Token account the output is credited to. */
+  destinationAccount: Address;
+  inputTokenProgram: Address;
+  outputTokenProgram: Address;
+  /** Must be encoded on-chain as the protocol's minimum-out constraint. */
+  minOutAmount: bigint;
+}
+
+/**
+ * A provider that can both quote and build swaps. Builders must encode
+ * `minOutAmount` as an on-chain constraint; providers whose protocol cannot
+ * must set `enforcesMinOut: false` and will be refused by sdk.swap.build().
+ */
+export interface SwapProvider extends SwapQuoteProvider {
+  readonly enforcesMinOut: boolean;
+  buildSwapInstructions(context: SwapInstructionContext): Promise<import("../builder/types.js").Instruction[]>;
+}
+
+export interface SwapBuildParams {
+  quote: SwapQuote;
+  /** Wallet that owns the input tokens and signs. */
+  owner: Address;
+  /** Output recipient. Defaults to owner; never changed silently. */
+  recipient?: Address;
+  /** Fee payer. Defaults to owner. */
+  feePayer?: Address;
+  recentBlockhash?: string;
+  version?: import("../builder/types.js").TransactionVersion;
+  /** Optional compute budget. */
+  priorityFeeMicroLamports?: bigint;
+  computeUnitLimit?: number;
+  /** Wrap native SOL into a temporary wSOL account when input is SOL. Default true. */
+  wrapSol?: boolean;
+  /** Unwrap received wSOL back to SOL when output is SOL. Default true. */
+  unwrapSol?: boolean;
+  /** Skip the pre-build re-quote pool check. Default false. */
+  skipPoolCheck?: boolean;
+}
+
+export interface SwapEstimatedFees {
+  /** Base signature fee (5000 lamports × required signers). */
+  networkFeeLamports: bigint;
+  priorityFeeLamports: bigint;
+  /** Rent for token accounts created by this transaction (partly refundable). */
+  rentLamports: bigint;
+  /** SOL moved into wSOL for the swap input. */
+  wrappedSolLamports: bigint;
+  /** Total SOL the fee payer / owner must hold. */
+  totalSolRequired: bigint;
+}
+
+export interface SwapBuildResult {
+  /** Unsigned transaction. Sign it with your wallet; the SDK never does. */
+  transaction: import("../builder/types.js").BuiltTransaction;
+  instructions: import("../builder/types.js").Instruction[];
+  quote: SwapQuote;
+  requiredSigners: Address[];
+  estimatedFees: SwapEstimatedFees;
+  accounts: {
+    source: Address;
+    destination: Address;
+    recipient: Address;
+    /** Token accounts this transaction creates. */
+    created: Address[];
+  };
+  /** Construction succeeding does not guarantee execution succeeds. */
+  warnings: string[];
+}
