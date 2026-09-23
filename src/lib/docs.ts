@@ -188,6 +188,30 @@ for await (const items of sdk.tokens.discovery.paginate("list", { sort: "volume"
     ],
   },
   {
+    slug: "swap-quotes",
+    title: "Swap Quotes",
+    group: "Domain APIs",
+    summary: "Quote-only swap engine: expected output, minimum received, fees and price impact.",
+    blocks: [
+      { text: "sdk.swap.quote() prices a potential swap. It never signs, broadcasts, modifies accounts or executes anything. Amounts are bigint base units (lamports for SOL); all math is exact integer arithmetic." },
+      { code: `const quote = await sdk.swap.quote({
+  input: "SOL",            // or "USDC", or any mint address
+  output: tokenMint,
+  amount: 1_000_000_000n,  // 1 SOL in lamports
+  slippageBps: 100,        // 1% tolerance
+});
+
+quote.outAmount;       // expected output (base units)
+quote.minOutAmount;    // outAmount minus slippage, rounded down
+quote.priceImpactBps;  // curve impact, fees excluded
+quote.fees;            // [{ amount, mint, bps, pool }]
+quote.route;           // single hop: pool, dex, amounts, fee
+sdk.swap.assertFresh(quote); // throws once expiresAt has passed` },
+      { text: "Four distinct numbers: spotPrice is the pool ratio before your trade; executionPrice is outAmount/inAmount for your size; priceImpactBps is how much your trade moves the curve (independent of fees); slippageBps is only your tolerance for state changing before execution, used to compute minOutAmount. 100 bps = 1%. slippageBps must be an integer and is capped at 1000 by default." },
+      { text: "Fees are charged on the input and rounded up in the pool's favour; output is rounded down, so quotes never overstate what you receive. Routes are direct single-pool only. The built-in PoolQuoteProvider uses pools from sdk.pools that report raw reserves and a fee, and only constant-product types (amm, cpmm) — concentrated-liquidity and stable pools are skipped rather than misquoted. Register your own SwapQuoteProvider to add other sources; it must return the normalized SwapQuote." },
+    ],
+  },
+  {
     slug: "pool-discovery",
     title: "Pool & Liquidity Discovery",
     group: "Domain APIs",
