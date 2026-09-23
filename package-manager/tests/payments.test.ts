@@ -31,7 +31,7 @@ describe("PaymentValidator", () => {
       expected: {
         from: "AlicePubkey111111111111111111111111111111111",
         to: "BobPubkey111111111111111111111111111111111111",
-        amount: "5000",
+        amount: "0.000005",
       },
     });
 
@@ -71,10 +71,13 @@ describe("PaymentValidator", () => {
         context: { slot: 1 },
         value: [{ slot: 123456790, confirmations: null, confirmationStatus: "finalized", err: null }],
       },
-      getAccountInfo: null,
-      getTokenSupply: {
+      getParsedAccountInfo: {
         context: { slot: 1 },
-        value: { amount: "1000000000000", decimals: 6, uiAmount: 1000000, uiAmountString: "1000000" },
+        value: {
+          owner: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          lamports: 1461600,
+          data: { parsed: { type: "mint", info: { decimals: 6, supply: "1000000000000" } }, program: "spl-token", space: 82 },
+        },
       },
     });
     const rpc = new RpcClient({ provider, defaultCommitment: "finalized" });
