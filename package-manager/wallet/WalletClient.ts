@@ -10,7 +10,7 @@ import { WalletAdapter, type BrowserWalletLike } from "./WalletAdapter.js";
  */
 export class WalletClient {
   /** Server-side only. Never ship secret keys to a browser. */
-  public keypair(secretKey: Uint8Array): KeypairSigner {
+  public keypair(secretKey: Uint8Array | string): KeypairSigner {
     return new KeypairSigner(secretKey);
   }
 

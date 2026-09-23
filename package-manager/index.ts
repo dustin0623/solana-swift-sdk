@@ -42,6 +42,7 @@ export { InstructionParser } from "./parser/InstructionParser.js";
 export { TransferParser } from "./parser/TransferParser.js";
 export { TokenTransferParser } from "./parser/TokenTransferParser.js";
 export { LogParser } from "./parser/LogParser.js";
+export { ParserClient } from "./parser/ParserClient.js";
 
 export { BuilderClient } from "./builder/BuilderClient.js";
 export { TransactionBuilder } from "./builder/TransactionBuilder.js";
@@ -73,6 +74,7 @@ export { ProgramClient } from "./programs/ProgramClient.js";
 export type { SolanaSigner } from "./wallet/Signer.js";
 export { KeypairSigner, verifySignature } from "./wallet/KeypairSigner.js";
 export { WalletAdapter } from "./wallet/WalletAdapter.js";
+export { WalletClient } from "./wallet/WalletClient.js";
 
 export type {
   AccountInfo,
