@@ -1,7 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState, type ReactNode } from "react";
-import { DocShell } from "../components/DocShell";
-import { CodeBlock } from "../components/CodeBlock";
+import { useState, type ReactNode } from "react";
+import { CodeBlock } from "../CodeBlock";
 import {
   MockRpcProvider,
   SolanaClient,
@@ -20,21 +18,7 @@ import {
 import { createDemoTradingEnv } from "@solanaxph-sdk/tests/tradingFixtures";
 import type { SwapBuildResult, SwapQuote, TradingDiscoveryCategory } from "@solanaxph-sdk";
 
-export const Route = createFileRoute("/playground")({
-  component: Playground,
-  head: () => ({
-    meta: [
-      { title: "Playground — SolanaXPH SDK" },
-      { name: "description", content: "Read-only Solana playground: parse live devnet/mainnet transactions, look up accounts and balances, derive PDAs and simulate payments." },
-      { property: "og:title", content: "Playground — SolanaXPH SDK" },
-      { property: "og:description", content: "Read-only Solana playground: parse live transactions, look up accounts, derive PDAs and simulate payments." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-});
-
-type LiveNetwork = "devnet" | "mainnet";
+export type LiveNetwork = "devnet" | "mainnet";
 
 function stringify(value: unknown): string {
   return typeof value === "string"
@@ -92,7 +76,7 @@ function Status({ busy, result, error }: { busy: boolean; result: unknown; error
   return result !== null ? <Output value={result} /> : null;
 }
 
-function Explorer({ client }: { client: SolanaClient }) {
+export function Explorer({ client }: { client: SolanaClient }) {
   const [signature, setSignature] = useState("");
   const [tx, setTx] = useState<ParsedTransaction | null>(null);
   const [showRaw, setShowRaw] = useState(false);
@@ -147,7 +131,7 @@ function Explorer({ client }: { client: SolanaClient }) {
   );
 }
 
-function AccountLookup({ client }: { client: SolanaClient }) {
+export function AccountLookup({ client }: { client: SolanaClient }) {
   const [address, setAddress] = useState("");
   const r = useRunner();
   return (
@@ -178,7 +162,7 @@ function AccountLookup({ client }: { client: SolanaClient }) {
   );
 }
 
-function RpcCard({ client }: { client: SolanaClient }) {
+export function RpcCard({ client }: { client: SolanaClient }) {
   const r = useRunner();
   return (
     <Card title="Raw RPC" code={`await solana.rpc.getSlot();\nawait solana.rpc.getEpochInfo();\nawait solana.rpc.request("getVersion", []);`}>
@@ -192,7 +176,7 @@ function RpcCard({ client }: { client: SolanaClient }) {
   );
 }
 
-function TokenCard({ client, network }: { client: SolanaClient; network: LiveNetwork }) {
+export function TokenCard({ client, network }: { client: SolanaClient; network: LiveNetwork }) {
   const usdc = network === "mainnet" ? "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" : "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU";
   const [mintAddress, setMint] = useState(usdc);
   const [owner, setOwner] = useState("");
@@ -228,7 +212,7 @@ function TokenCard({ client, network }: { client: SolanaClient; network: LiveNet
   );
 }
 
-function PdaCard() {
+export function PdaCard() {
   const [seed, setSeed] = useState("vault");
   const r = useRunner();
   return (
@@ -242,7 +226,7 @@ function PdaCard() {
   );
 }
 
-function PaymentCard() {
+export function PaymentCard() {
   const r = useRunner();
   const sim = useRunner();
   const mock = useMemo(
@@ -307,7 +291,7 @@ function PaymentCard() {
   );
 }
 
-function TradingCard() {
+export function TradingCard() {
   const env = useMemo(() => createDemoTradingEnv(), []);
   const { sdk, wallet, mints } = env;
   const symbols: Record<string, string> = { SOL: "SOL", USDC: "USDC", [mints.PHX]: "PHX", [mints.BAY]: "BAY", [mints.ISL]: "ISL" };
@@ -409,44 +393,3 @@ await sdk.trading.trace(tx);   // which providers / DEX / programs`}
   );
 }
 
-function Playground() {
-  const [network, setNetwork] = useState<LiveNetwork>("devnet");
-  const client = useMemo(() => new SolanaClient({ network }), [network]);
-  return (
-    <DocShell>
-      <div className="mx-auto max-w-7xl px-6 py-12">
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Playground</h1>
-          <p className="mt-1 text-muted-foreground">
-            Read-only calls against public Solana RPC. No keys, no seed phrases, no broadcasts.
-          </p>
-        </div>
-        <label className="text-sm">
-          Network{" "}
-          <select
-            aria-label="Network"
-            className="ml-2 rounded-md border border-border bg-background px-2 py-1"
-            value={network}
-            onChange={(e) => setNetwork(e.target.value === "mainnet" ? "mainnet" : "devnet")}
-          >
-            <option value="devnet">devnet</option>
-            <option value="mainnet">mainnet (read-only)</option>
-          </select>
-        </label>
-      </div>
-      <div className="grid gap-6">
-        <Explorer key={`x-${network}`} client={client} />
-        <div className="grid gap-6 md:grid-cols-2">
-          <AccountLookup key={`a-${network}`} client={client} />
-          <RpcCard key={`r-${network}`} client={client} />
-          <TokenCard key={`t-${network}`} client={client} network={network} />
-          <PdaCard />
-        </div>
-        <PaymentCard />
-        <TradingCard />
-      </div>
-      </div>
-    </DocShell>
-  );
-}
