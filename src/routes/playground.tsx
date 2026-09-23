@@ -44,9 +44,17 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
 }
 
 function Output({ value }: { value: unknown }) {
+  const text =
+    typeof value === "string"
+      ? value
+      : JSON.stringify(
+          value,
+          (_key, val) => (typeof val === "bigint" ? `${val.toString()}n` : val),
+          2,
+        );
   return (
     <pre className="mt-3 max-h-64 overflow-auto rounded-md bg-muted p-3 text-xs font-mono">
-      {typeof value === "string" ? value : JSON.stringify(value, null, 2)}
+      {text}
     </pre>
   );
 }
