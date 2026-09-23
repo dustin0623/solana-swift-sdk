@@ -12,3 +12,4 @@
 - [x] Phase 9 Playground (read-only / devnet)
 - [x] Tests with MockRpcProvider + fixtures
 - [x] Root README, .env.example, final git/ref verification
+- [x] Phase 1 (tokens): token reader, metadata, discovery, tests (62 passing), docs + playground
