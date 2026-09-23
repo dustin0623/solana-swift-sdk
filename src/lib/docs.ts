@@ -271,6 +271,45 @@ result.signature; result.confirmationStatus; result.slot;` },
     ],
   },
   {
+    slug: "trading",
+    title: "Token Trading Flow",
+    group: "Domain APIs",
+    summary: "Discovery, token details, pools, quote, build, simulate and execute as one flow with full provenance.",
+    blocks: [
+      { code: `// 1. Discovery — only categories the provider supports
+sdk.trading.categories();                         // e.g. ["search", "new", "recent", "volume"]
+const fresh = await sdk.trading.discover("new", { limit: 20 });
+const hits  = await sdk.trading.discover("search", { query: "bonk" });
+// "trending" throws UnsupportedOperationError unless the provider ranks by it
+
+// 2. Token details — tokens.get + tokens.metadata + discovery + pools.find
+const view = await sdk.trading.view(mint);
+view.name;      // { value, source: { origin: "on-chain-metadata" | "off-chain-metadata" | "discovery", provider } }
+view.decimals;  // always from the mint account
+view.market;    // indexed price / volume / liquidity + its discovery source, or null
+view.pools;     // [{ address, dex, programId, pair, liquidityUsd, price, feeBps, provider }]
+view.routes;    // pairs the token trades against
+
+// 3. Buy / sell
+const buy  = await sdk.trading.quoteBuy({ mint, amount: 1_000_000_000n, slippageBps: 100 });       // SOL -> token
+const sell = await sdk.trading.quoteSell({ mint, receive: "USDC", amount: 5_000_000n });          // token -> USDC
+// both are sdk.swap.quote(...) — use it directly for any pair
+
+// 4. Build, simulate, execute (unchanged Phase 5/6 APIs)
+const tx = await sdk.swap.build({ quote: buy, owner: wallet.address });
+await sdk.swap.simulate(tx);
+await sdk.swap.execute(tx, { signers: [wallet] });
+
+// 5. Transparency
+const trace = await sdk.trading.trace(tx);
+trace.swapProvider;   // who quoted
+trace.hops;           // pool, dex, poolProgramId, poolProvider per hop
+trace.swapPrograms;   // DEX programs the transaction actually invokes` },
+      { text: "sdk.trading is a thin integration layer: it calls the existing token, discovery, pool and swap clients and never fetches data of its own. Only the mint read is required for view(); failed metadata, discovery or pool lookups become warnings instead of invented values." },
+      { text: "Market figures are always third-party data and are shown with the discovery provider that supplied them. Rankings are never synthesized — a provider that cannot rank by a category makes that category unavailable." },
+    ],
+  },
+  {
     slug: "pool-discovery",
     title: "Pool & Liquidity Discovery",
     group: "Domain APIs",

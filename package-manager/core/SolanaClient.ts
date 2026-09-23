@@ -11,6 +11,7 @@ import { ProgramClient } from "../programs/ProgramClient.js";
 import { PoolClient } from "../pools/PoolClient.js";
 import { SwapClient } from "../swap/SwapClient.js";
 import { PoolQuoteProvider } from "../swap/providers/PoolQuoteProvider.js";
+import { TradingClient } from "../trading/TradingClient.js";
 import { ParserClient } from "../parser/ParserClient.js";
 import { WalletClient } from "../wallet/WalletClient.js";
 import type { BlockReader } from "../reader/BlockReader.js";
@@ -66,6 +67,8 @@ export class SolanaClient {
   public readonly pools: PoolClient;
   /** Quote-only swap engine. Never signs or executes. */
   public readonly swap: SwapClient;
+  /** Integrated discovery → token → pools → swap flow (delegates to the clients above). */
+  public readonly trading: TradingClient;
   public readonly stream: StreamEngine;
   /** Offline parsing of raw RPC payloads. */
   public readonly parser: ParserClient;
@@ -120,6 +123,7 @@ export class SolanaClient {
       rpc: this.rpc,
       builder: this.builder,
     });
+    this.trading = new TradingClient(this.tokens, this.pools, this.swap, this.providerName);
     this.stream = new StreamEngine(
       this.rpc,
       subscriptionProvider,
