@@ -233,6 +233,44 @@ result.warnings;` },
     ],
   },
   {
+    slug: "swap-execution",
+    title: "Swap Execution",
+    group: "Domain APIs",
+    summary: "The full lifecycle: quote, build, simulate, sign, send, confirm — only when you ask.",
+    blocks: [
+      { code: `const quote = await sdk.swap.quote({ input: "SOL", output: tokenMint, amount: 1_000_000_000n, slippageBps: 100 });
+const tx = await sdk.swap.build({ quote, owner: wallet.address });   // unsigned
+
+// Inspect before anything is signed
+tx.instructions; tx.requiredSigners; tx.estimatedFees; tx.accounts.recipient;
+
+const simulation = await sdk.swap.simulate(tx);   // never signs or broadcasts
+simulation.success; simulation.logs; simulation.unitsConsumed; simulation.error;
+
+const result = await sdk.swap.execute(tx, {
+  signers: [wallet],          // any SolanaSigner: wallet adapter, hardware, keypair
+  commitment: "confirmed",    // processed | confirmed | finalized
+});
+result.signature; result.confirmationStatus; result.slot;` },
+      { text: "execute() is the only swap method that signs or sends. It checks the quote is still fresh, that the signers exactly match the transaction's required signers, simulates (on by default), signs the exact message you inspected, broadcasts once (never auto-retried), then waits for the requested commitment." },
+      { text: "Signing goes through the SolanaSigner interface, so external wallets work and the core SDK never needs a private key. Signer errors are reported by signer address only; their messages are not copied, so no key or seed phrase can leak into logs." },
+      { code: `try {
+  await sdk.swap.execute(tx, { signers: [wallet] });
+} catch (e) {
+  if (e instanceof SwapExecutionError) {
+    e.reason;    // simulation_failed | insufficient_funds | blockhash_expired | slippage_exceeded
+                 // rejected | rpc_error | timeout | confirmation_failed | signer_mismatch
+                 // signing_failed | quote_expired
+    e.stage;     // validate | simulate | sign | send | confirm
+    e.signature; // set once the transaction was sent
+    e.logs;      // program logs when available
+    e.cause;     // the untouched Solana / RPC error
+  }
+}` },
+      { text: "A timeout means the transaction was not observed in time — it may still land. Check the signature before sending again. A blockhash_expired failure during confirmation means it can never land, so it is safe to rebuild from a fresh quote." },
+    ],
+  },
+  {
     slug: "pool-discovery",
     title: "Pool & Liquidity Discovery",
     group: "Domain APIs",

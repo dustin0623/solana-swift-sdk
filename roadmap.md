@@ -17,3 +17,4 @@
 - [x] Phase 3 (pool discovery): PoolProvider abstraction, normalized LiquidityPool, find/get/rank/verify, static provider, tests (118 passing), docs
 - [x] Phase 4: quote engine (sdk.swap.quote, quote-only, no execution)
 - [x] Phase 5: swap transaction builder (sdk.swap.build, unsigned only)
+- [x] Phase 6: swap execution (sdk.swap.simulate / execute, explicit signers)
