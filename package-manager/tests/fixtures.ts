@@ -272,7 +272,6 @@ export const allFixtures: Record<string, RpcTransaction> = {
   [VERSIONED_SIGNATURE]: versionedTransaction,
 };
 
-const TOKEN = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 const MEMO = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr";
 
 export const multipleTransfers: RpcTransaction = {
