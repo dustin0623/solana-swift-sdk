@@ -19,6 +19,8 @@ export const alice = byte(1);
 export const bob = byte(2);
 export const carol = byte(3);
 export const mint = byte(4);
+export const aliceAta = "8ZfjnwxdKftw8Kk9xcDmsR2kdyDJhHSaTo2uWypq4m8g";
+export const bobAta = "Gw9YRejU7bwbcgNxWYeYBjrS5Z9Mzhf2heC58voURatW";
 export const lookupAddr = byte(7);
 export const lookupTable = byte(8);
 
