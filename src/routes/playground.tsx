@@ -14,7 +14,6 @@ import {
 import {
   alice,
   bob,
-  mint,
   successfulSolTransfer,
   SOL_TRANSFER_SIGNATURE,
 } from "@solanaxph-sdk/tests/fixtures";
