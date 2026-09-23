@@ -1,3 +1,4 @@
+import { InstructionBuilder } from "../builder/InstructionBuilder";
 import { ValidationError } from "../errors/index";
 import type { TransactionReader } from "../reader/TransactionReader";
 import type {
@@ -6,6 +7,7 @@ import type {
   ParsedTransaction,
   Signature,
 } from "../types/index";
+import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address";
 import { solToLamports, toBaseUnits } from "../utils/amount";
 import type { MintClient } from "../tokens/MintClient";
 
@@ -152,7 +154,7 @@ export class PaymentValidator {
   ): Promise<bigint | null> {
     const mint = expected.mint as Address;
     const info = await this.mints.get(mint);
-    const destination = await this.associated(expected.to, mint, info.program);
+    const destination = this.associated(expected.to, mint, info.program);
 
     const matches = transaction.tokenTransfers.filter((transfer) => {
       const mintMatches = transfer.mint === null || transfer.mint === mint;
@@ -167,13 +169,11 @@ export class PaymentValidator {
     return matches.reduce((sum, transfer) => sum + BigInt(transfer.amount), 0n);
   }
 
-  private async associated(
+  private associated(
     owner: Address,
     mint: Address,
     program: "spl-token" | "spl-token-2022",
-  ): Promise<Address> {
-    const { InstructionBuilder } = await import("../builder/InstructionBuilder");
-    const { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } = await import("../utils/address");
+  ): Address {
     return InstructionBuilder.associatedTokenAddress(
       owner,
       mint,
