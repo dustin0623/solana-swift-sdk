@@ -481,6 +481,7 @@ import { HeliusRpcProvider } from "solanaxph-sdk/helius";` },
     summary: "Testing with MockRpcProvider.",
     blocks: [
       { code: `import { SolanaClient, MockRpcProvider } from "solanaxph-sdk";\n\nconst solana = new SolanaClient({\n  provider: new MockRpcProvider({ getBalance: { context: { slot: 1 }, value: 42 } }),\n});\nawait solana.reader.balance(address); // { lamports: 42n, ... }` },
+      { text: "Reusable fixtures and demo trading data live in the SDK's test helpers: import { alice, bob, mint, successfulSolTransfer } from \"solanaxph-sdk/tests/fixtures\" — the same data the Playground uses, so examples stay reproducible." },
       { text: "Try the interactive examples in the Playground — including a live devnet transaction explorer." },
     ],
   },
