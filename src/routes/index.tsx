@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <DocShell>
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl px-6 py-12">
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             SolanaXPH SDK

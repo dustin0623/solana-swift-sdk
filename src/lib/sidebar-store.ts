@@ -22,7 +22,9 @@ export function useSidebarOpen() {
   return useSyncExternalStore(
     (listener) => {
       listeners.add(listener);
-      return () => listeners.delete(listener);
+      return () => {
+        listeners.delete(listener);
+      };
     },
     () => open,
     () => null,

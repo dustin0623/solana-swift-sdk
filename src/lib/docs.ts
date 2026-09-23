@@ -13,10 +13,10 @@ export const DOCS: DocSection[] = [
     group: "Getting started",
     summary: "What SolanaXPH is and why it is RPC-first.",
     blocks: [
-      { text: "SolanaXPH is a strict TypeScript SDK built on standard Solana JSON-RPC. It gives you readers, parsers, builders and domain APIs (payments, tokens, NFTs, programs) over accounts, instructions, versioned transactions, lookup tables and PDAs." },
-      { text: "It follows the same layering philosophy as the HivexPH SDK — simple API, then readers, builders, parsers and events — but it shares no blockchain code with it. Hive and Solana stay technically independent." },
-      { code: `Solana blockchain\n  -> Solana RPC\n  -> RpcClient (provider-agnostic)\n  -> Reader / Builder / Parser\n  -> Payments / Tokens / Programs\n  -> Your application` },
-      { note: "Helius, QuickNode, Alchemy or your own node are providers that plug into the RPC layer. None of them is required." },
+      { title: "What it does", text: "SolanaXPH is a strict TypeScript SDK built on standard Solana JSON-RPC. It gives you readers, parsers, builders and domain APIs (payments, tokens, NFTs, programs) over accounts, instructions, versioned transactions, lookup tables and PDAs." },
+      { title: "Design philosophy", text: "It follows the same layering philosophy as the HivexPH SDK — simple API, then readers, builders, parsers and events — but it shares no blockchain code with it. Hive and Solana stay technically independent." },
+      { title: "Architecture", code: `Solana blockchain\n  -> Solana RPC\n  -> RpcClient (provider-agnostic)\n  -> Reader / Builder / Parser\n  -> Payments / Tokens / Programs\n  -> Your application` },
+      { title: "Provider model", note: "Helius, QuickNode, Alchemy or your own node are providers that plug into the RPC layer. None of them is required." },
     ],
   },
   {
