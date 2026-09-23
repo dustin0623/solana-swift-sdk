@@ -207,3 +207,41 @@ export type {
   DiscoverySource,
   TokenDiscoveryProvider,
 } from "./discovery/types.js";
+
+// ── Pool & liquidity discovery ────────────────────────────────────────
+export { PoolClient } from "./pools/PoolClient.js";
+export type { PoolCallOptions, PoolFindOptions, PoolVerification } from "./pools/PoolClient.js";
+export { StaticPoolProvider } from "./pools/providers/StaticPoolProvider.js";
+export type {
+  StaticPoolEntry,
+  StaticPoolProviderOptions,
+  StaticPoolSide,
+} from "./pools/providers/StaticPoolProvider.js";
+export {
+  DEFAULT_POOL_RANKING_WEIGHTS,
+  poolLiquidityUsd,
+  rankPools,
+} from "./pools/ranking.js";
+export type {
+  PoolRankingFactor,
+  PoolRankingOptions,
+  PoolRankingWeights,
+  RankedPool,
+} from "./pools/ranking.js";
+export { NO_POOL_CAPABILITIES, poolCapabilities } from "./pools/types.js";
+export type {
+  LiquidityPool,
+  PoolCapabilities,
+  PoolCapability,
+  PoolDataOrigin,
+  PoolFee,
+  PoolLiquidity,
+  PoolPage,
+  PoolPageRequest,
+  PoolProvider,
+  PoolQuery,
+  PoolSource,
+  PoolTokenSide,
+  PoolType,
+  PoolValue,
+} from "./pools/types.js";
