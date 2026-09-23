@@ -236,7 +236,7 @@ describe("discovery: normalization and attribution", () => {
 describe("discovery: on-chain mint lookup", () => {
   function clientWithMint(): SolanaClient {
     const provider = new MockRpcProvider();
-    provider.on("getAccountInfo", (params) => {
+    provider.set("getAccountInfo", (params) => {
       const [address, config] = params as [string, { encoding?: string } | undefined];
       if (config?.encoding === "jsonParsed" && address === other) {
         return {
