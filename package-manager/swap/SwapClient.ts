@@ -8,10 +8,14 @@ import { isValidAddress } from "../utils/address.js";
 import { assertBps } from "./math.js";
 import type { BuilderClient } from "../builder/BuilderClient.js";
 import type { RpcClient } from "../rpc/RpcClient.js";
+import { SwapExecutor } from "./SwapExecutor.js";
 import { SwapTransactionBuilder, assertQuoteShape, isSwapProvider } from "./SwapTransactionBuilder.js";
 import type {
   SwapBuildParams,
   SwapBuildResult,
+  SwapExecuteOptions,
+  SwapExecutionResult,
+  SwapSimulation,
   SwapQuote,
   SwapQuoteParams,
   SwapQuoteProvider,
@@ -39,12 +43,14 @@ export class SwapClient {
   private readonly defaultSlippageBps: number;
   private readonly now: () => number;
   private readonly txBuilder: SwapTransactionBuilder | null;
+  private readonly executor: SwapExecutor | null;
 
   constructor(providers: readonly SwapQuoteProvider[] = [], options: SwapClientOptions = {}) {
     this.usdcMint = options.usdcMint ?? MAINNET_USDC_MINT;
     this.maxSlippageBps = options.maxSlippageBps ?? 1_000;
     this.defaultSlippageBps = options.defaultSlippageBps ?? 50;
     this.now = options.now ?? Date.now;
+    this.executor = options.rpc ? new SwapExecutor(options.rpc, this.now) : null;
     this.txBuilder = options.rpc && options.builder ? new SwapTransactionBuilder(options.rpc, options.builder) : null;
     for (const p of providers) this.register(p);
   }
@@ -146,6 +152,25 @@ export class SwapClient {
       throw new UnsupportedOperationError(`Provider "${provider.name}" can quote but cannot build swap transactions.`);
     }
     return this.txBuilder.build(provider, params);
+  }
+
+  /** Simulates a built swap. Never signs or broadcasts. */
+  public async simulate(built: SwapBuildResult): Promise<SwapSimulation> {
+    return this.requireExecutor().simulate(built);
+  }
+
+  /**
+   * Explicit execution: simulate → sign with the given signers → send →
+   * confirm. The only swap method that signs or reaches the network with a
+   * transaction.
+   */
+  public async execute(built: SwapBuildResult, options: SwapExecuteOptions): Promise<SwapExecutionResult> {
+    return this.requireExecutor().execute(built, options);
+  }
+
+  private requireExecutor(): SwapExecutor {
+    if (!this.executor) throw new UnsupportedOperationError("swap execution needs an RPC client; use it via SolanaClient.");
+    return this.executor;
   }
 
   private resolveProvider(name: string): SwapQuoteProvider {
