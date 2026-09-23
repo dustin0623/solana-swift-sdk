@@ -70,7 +70,7 @@ export type { NftAsset } from "./nft/NftClient.js";
 
 export { ProgramClient } from "./programs/ProgramClient.js";
 
-export { SolanaSigner } from "./wallet/Signer.js";
+export type { SolanaSigner } from "./wallet/Signer.js";
 export { KeypairSigner, verifySignature } from "./wallet/KeypairSigner.js";
 export { WalletAdapter } from "./wallet/WalletAdapter.js";
 
