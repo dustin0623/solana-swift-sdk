@@ -1,4 +1,4 @@
-import type { BuilderClient } from "../builder/BuilderClient.js";
+import { BuilderClient } from "../builder/BuilderClient.js";
 import { HttpRpcProvider } from "../rpc/HttpRpcProvider.js";
 import type { SolanaRpcProvider } from "../rpc/RpcProvider.js";
 import { RpcClient } from "../rpc/RpcClient.js";
@@ -11,7 +11,7 @@ import { ProgramClient } from "../programs/ProgramClient.js";
 import { StreamEngine } from "../reader/stream/StreamEngine.js";
 import type { SolanaRpcSubscriptionProvider } from "../rpc/RpcProvider.js";
 import { WebSocketRpcProvider } from "../rpc/WebSocketRpcProvider.js";
-import { deriveWsUrl, endpointsFor, isNetwork, type Network } from "./networks.js";
+import { deriveWsUrl, endpointsFor, isNetwork } from "./networks.js";
 import type { Commitment, Network as NetworkType } from "../types/index.js";
 import { ConfigurationError } from "../errors/index.js";
 
