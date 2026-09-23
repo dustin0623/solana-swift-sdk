@@ -1,10 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { MockRpcProvider } from "../rpc/MockRpcProvider.js";
 import { RpcClient } from "../rpc/RpcClient.js";
-import { TransactionBuilder } from "../builder/TransactionBuilder.js";
+import { TransactionBuilder, signTransaction } from "../builder/TransactionBuilder.js";
 import { KeypairSigner } from "../wallet/KeypairSigner.js";
 import { InstructionBuilder } from "../builder/InstructionBuilder.js";
-import { assertSimulationSucceeded } from "../builder/TransactionBuilder.js";
 import { solToLamports } from "../utils/amount.js";
 
 const alice = KeypairSigner.generate();
@@ -26,7 +25,7 @@ describe("TransactionBuilder", () => {
     expect(tx.message.accountKeys).toContain(bob);
     expect(tx.isFullySigned()).toBe(false);
 
-    const signed = await tx.signatures.set(alice.address, await alice.signMessageBytes(tx.message.bytes));
+    await signTransaction(tx, alice);
     expect(tx.isFullySigned()).toBe(true);
     expect(tx.serialize()).toMatch(/^[A-Za-z0-9+/=]+$/);
   });

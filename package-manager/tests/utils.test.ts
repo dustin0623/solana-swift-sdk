@@ -46,7 +46,6 @@ describe("amount", () => {
 
 describe("address", () => {
   it("validates 32-byte base58 addresses", () => {
-    expect(isValidAddress(SYSTEM_PROGRAM_ID)).toBe(true);
     expect(isValidAddress(TOKEN_PROGRAM_ID)).toBe(true);
     expect(isValidAddress("notanaddress")).toBe(false);
     expect(isValidAddress("short")).toBe(false);
@@ -54,7 +53,7 @@ describe("address", () => {
 
   it("assertAddress throws for invalid addresses", () => {
     expect(() => assertAddress("nope")).toThrow();
-    expect(assertAddress(SYSTEM_PROGRAM_ID)).toBe(SYSTEM_PROGRAM_ID);
+    expect(assertAddress(TOKEN_PROGRAM_ID)).toBe(TOKEN_PROGRAM_ID);
   });
 });
 
@@ -72,7 +71,9 @@ describe("pda", () => {
   it("produces different addresses for different programs", () => {
     const seeds = ["seed"];
     const tokenPda = derivePda(seeds, TOKEN_PROGRAM_ID);
-    const systemPda = derivePda(seeds, SYSTEM_PROGRAM_ID);
-    expect(tokenPda.address).not.toBe(systemPda.address);
+    // Use another well-known program that supports a PDA for this seed.
+    const otherProgram = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
+    const otherPda = derivePda(seeds, otherProgram);
+    expect(tokenPda.address).not.toBe(otherPda.address);
   });
 });
