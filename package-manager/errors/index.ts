@@ -60,7 +60,7 @@ export class RpcHttpError extends SolanaSdkError {
 
 export class TransactionError extends SolanaSdkError {
   public readonly signature: string | undefined;
-  public readonly cause: unknown;
+  public override readonly cause: unknown;
 
   constructor(message: string, options: { signature?: string | undefined; cause?: unknown } = {}) {
     super("TRANSACTION_ERROR", message);

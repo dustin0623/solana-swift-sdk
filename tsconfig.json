@@ -24,7 +24,9 @@
     "exactOptionalPropertyTypes": true,
     "noUncheckedSideEffectImports": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@solanaxph-sdk": ["./package-manager/index.ts"],
+      "@solanaxph-sdk/*": ["./package-manager/*.ts"]
     }
   }
 }

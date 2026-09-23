@@ -1,6 +1,6 @@
-import { ValidationError } from "../errors/index";
-import type { Address } from "../types/index";
-import { base58Decode, base58Encode, isBase58 } from "./base58";
+import { ValidationError } from "../errors/index.js";
+import type { Address } from "../types/index.js";
+import { base58Decode, base58Encode, isBase58 } from "./base58.js";
 
 /** Well known program ids the SDK recognises. Application programs stay out. */
 export const SYSTEM_PROGRAM_ID = "11111111111111111111111111111111";

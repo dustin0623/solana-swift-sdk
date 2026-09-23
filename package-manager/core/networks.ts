@@ -1,5 +1,5 @@
-import { ConfigurationError } from "../errors/index";
-import type { Network } from "../types/index";
+import { ConfigurationError } from "../errors/index.js";
+import type { Network } from "../types/index.js";
 
 /**
  * Network configuration.

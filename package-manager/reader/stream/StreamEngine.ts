@@ -1,12 +1,12 @@
-import { SubscriptionError } from "../../errors/index";
-import type { RpcClient } from "../../rpc/RpcClient";
+import { SubscriptionError } from "../../errors/index.js";
+import type { RpcClient } from "../../rpc/RpcClient.js";
 import type {
   RpcSubscriptionHandle,
   SolanaRpcSubscriptionProvider,
-} from "../../rpc/RpcProvider";
-import type { Address, Commitment, Signature } from "../../types/index";
-import { assertAddress } from "../../utils/address";
-import { AccountReader } from "../AccountReader";
+} from "../../rpc/RpcProvider.js";
+import type { Address, Commitment, Signature } from "../../types/index.js";
+import { assertAddress } from "../../utils/address.js";
+import { AccountReader } from "../AccountReader.js";
 
 export interface Subscription {
   readonly id: number | null;

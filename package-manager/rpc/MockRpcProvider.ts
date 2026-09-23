@@ -1,5 +1,5 @@
-import { RpcError } from "../errors/index";
-import type { SolanaRpcProvider } from "./RpcProvider";
+import { RpcError } from "../errors/index.js";
+import type { SolanaRpcProvider } from "./RpcProvider.js";
 
 export type MockHandler = (params: readonly unknown[]) => unknown;
 

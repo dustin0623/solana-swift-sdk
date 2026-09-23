@@ -1,14 +1,14 @@
-import { TransactionParser } from "../parser/TransactionParser";
-import type { RpcClient } from "../rpc/RpcClient";
-import type { CommitmentConfig } from "../rpc/types";
+import { TransactionParser } from "../parser/TransactionParser.js";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { CommitmentConfig } from "../rpc/types.js";
 import type {
   Address,
   ParsedTransaction,
   Signature,
   SignatureRecord,
   TransactionStatusInfo,
-} from "../types/index";
-import { assertAddress } from "../utils/address";
+} from "../types/index.js";
+import { assertAddress } from "../utils/address.js";
 
 /**
  * Transaction reading — legacy and versioned, with lookup tables resolved.

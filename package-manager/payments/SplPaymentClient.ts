@@ -1,7 +1,7 @@
-import type { TransactionBuilder } from "../builder/TransactionBuilder";
-import type { TokenClient } from "../tokens/TokenClient";
-import type { Address, Commitment, Signature, TransactionStatusInfo } from "../types/index";
-import type { SolanaSigner } from "../wallet/Signer";
+import type { TransactionBuilder } from "../builder/TransactionBuilder.js";
+import type { TokenClient } from "../tokens/TokenClient.js";
+import type { Address, Commitment, Signature, TransactionStatusInfo } from "../types/index.js";
+import type { SolanaSigner } from "../wallet/Signer.js";
 
 export interface SplTransferRequest {
   mint: Address;

@@ -1,8 +1,8 @@
-import type { RpcClient } from "../rpc/RpcClient";
-import type { Address, SimulationResult, Commitment } from "../types/index";
-import { InstructionBuilder } from "./InstructionBuilder";
-import { simulateBuilt, TransactionBuilder } from "./TransactionBuilder";
-import type { BuiltTransaction, Instruction } from "./types";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { Address, SimulationResult, Commitment } from "../types/index.js";
+import { InstructionBuilder } from "./InstructionBuilder.js";
+import { simulateBuilt, TransactionBuilder } from "./TransactionBuilder.js";
+import type { BuiltTransaction, Instruction } from "./types.js";
 
 /**
  * `solana.builder` — a factory for transaction builders.

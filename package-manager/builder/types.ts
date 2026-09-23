@@ -1,4 +1,4 @@
-import type { Address } from "../types/index";
+import type { Address } from "../types/index.js";
 
 export interface AccountMeta {
   address: Address;

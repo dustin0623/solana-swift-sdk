@@ -1,11 +1,11 @@
-import type { BuilderClient } from "../builder/BuilderClient";
-import { InstructionBuilder } from "../builder/InstructionBuilder";
-import type { TransactionBuilder } from "../builder/TransactionBuilder";
-import { ValidationError } from "../errors/index";
-import type { Address } from "../types/index";
-import { assertAddress, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address";
-import { toBaseUnits } from "../utils/amount";
-import type { MintClient } from "./MintClient";
+import type { BuilderClient } from "../builder/BuilderClient.js";
+import { InstructionBuilder } from "../builder/InstructionBuilder.js";
+import type { TransactionBuilder } from "../builder/TransactionBuilder.js";
+import { ValidationError } from "../errors/index.js";
+import type { Address } from "../types/index.js";
+import { assertAddress, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address.js";
+import { toBaseUnits } from "../utils/amount.js";
+import type { MintClient } from "./MintClient.js";
 
 export interface TokenTransferRequest {
   mint: Address;

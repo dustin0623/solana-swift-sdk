@@ -1,9 +1,9 @@
-import { ValidationError } from "../errors/index";
-import type { Address } from "../types/index";
-import { addressToBytes, assertAddress } from "../utils/address";
-import { base58Decode } from "../utils/base58";
-import { base64Encode, concatBytes, encodeLength } from "../utils/bytes";
-import type { AccountMeta, CompiledMessage, Instruction, TransactionVersion } from "./types";
+import { ValidationError } from "../errors/index.js";
+import type { Address } from "../types/index.js";
+import { addressToBytes, assertAddress } from "../utils/address.js";
+import { base58Decode } from "../utils/base58.js";
+import { base64Encode, concatBytes, encodeLength } from "../utils/bytes.js";
+import type { AccountMeta, CompiledMessage, Instruction, TransactionVersion } from "./types.js";
 
 interface Entry {
   address: Address;

@@ -5,7 +5,7 @@
  * Everything is converted between decimal strings and bigint base units.
  */
 
-import { ValidationError } from "../errors/index";
+import { ValidationError } from "../errors/index.js";
 
 export const LAMPORTS_PER_SOL = 1_000_000_000n;
 export const SOL_DECIMALS = 9;

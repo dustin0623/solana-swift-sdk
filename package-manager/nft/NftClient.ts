@@ -1,8 +1,8 @@
-import type { TransactionBuilder } from "../builder/TransactionBuilder";
-import type { ReaderClient } from "../reader/ReaderClient";
-import type { TokenClient } from "../tokens/TokenClient";
-import type { Address } from "../types/index";
-import { assertAddress } from "../utils/address";
+import type { TransactionBuilder } from "../builder/TransactionBuilder.js";
+import type { ReaderClient } from "../reader/ReaderClient.js";
+import type { TokenClient } from "../tokens/TokenClient.js";
+import type { Address } from "../types/index.js";
+import { assertAddress } from "../utils/address.js";
 
 export interface NftAsset {
   mint: Address;

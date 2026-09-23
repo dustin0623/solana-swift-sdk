@@ -1,5 +1,5 @@
-import { RpcError, RpcHttpError } from "../errors/index";
-import type { SolanaRpcProvider } from "./RpcProvider";
+import { RpcError, RpcHttpError } from "../errors/index.js";
+import type { SolanaRpcProvider } from "./RpcProvider.js";
 
 export interface HttpRpcProviderOptions {
   url: string;

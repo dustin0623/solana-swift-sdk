@@ -1,11 +1,11 @@
-import type { AccountReader } from "../reader/AccountReader";
-import type { RpcClient } from "../rpc/RpcClient";
-import type { CommitmentConfig, RpcKeyedAccount } from "../rpc/types";
-import type { AccountInfo, Address } from "../types/index";
-import { assertAddress } from "../utils/address";
-import { findProgramAddress, type Pda, type PdaSeed } from "../utils/pda";
-import { AccountReader as Reader } from "../reader/AccountReader";
-import type { Instruction, AccountMeta } from "../builder/types";
+import type { AccountReader } from "../reader/AccountReader.js";
+import type { RpcClient } from "../rpc/RpcClient.js";
+import type { CommitmentConfig, RpcKeyedAccount } from "../rpc/types.js";
+import type { AccountInfo, Address } from "../types/index.js";
+import { assertAddress } from "../utils/address.js";
+import { findProgramAddress, type Pda, type PdaSeed } from "../utils/pda.js";
+import { AccountReader as Reader } from "../reader/AccountReader.js";
+import type { Instruction, AccountMeta } from "../builder/types.js";
 
 /**
  * `solana.programs` — generic program access.

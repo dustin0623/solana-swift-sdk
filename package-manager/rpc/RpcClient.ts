@@ -1,5 +1,5 @@
-import type { Commitment, Address, Signature } from "../types/index";
-import type { SolanaRpcProvider } from "./RpcProvider";
+import type { Commitment, Address, Signature } from "../types/index.js";
+import type { SolanaRpcProvider } from "./RpcProvider.js";
 import type {
   CommitmentConfig,
   RpcAccountInfo,
@@ -12,7 +12,7 @@ import type {
   RpcSimulationValue,
   RpcTokenAmount,
   RpcTransaction,
-} from "./types";
+} from "./types.js";
 
 export interface RpcClientOptions {
   provider: SolanaRpcProvider;
@@ -45,7 +45,7 @@ export class RpcClient {
   }
 
   private config(config: CommitmentConfig = {}): Record<string, unknown> {
-    return { commitment: config.commitment ?? this.defaultCommitment, ...omitUndefined(config) };
+    return { commitment: config.commitment ?? this.defaultCommitment, ...omitUndefined(config as Record<string, unknown>) };
   }
 
   /* ── Accounts & balances ───────────────────────────────────────────── */

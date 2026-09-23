@@ -1,15 +1,15 @@
-import { InstructionBuilder } from "../builder/InstructionBuilder";
-import { ValidationError } from "../errors/index";
-import type { TransactionReader } from "../reader/TransactionReader";
+import { InstructionBuilder } from "../builder/InstructionBuilder.js";
+import { ValidationError } from "../errors/index.js";
+import type { TransactionReader } from "../reader/TransactionReader.js";
 import type {
   Address,
   Commitment,
   ParsedTransaction,
   Signature,
-} from "../types/index";
-import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address";
-import { solToLamports, toBaseUnits } from "../utils/amount";
-import type { MintClient } from "../tokens/MintClient";
+} from "../types/index.js";
+import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "../utils/address.js";
+import { solToLamports, toBaseUnits } from "../utils/amount.js";
+import type { MintClient } from "../tokens/MintClient.js";
 
 export interface PaymentExpectation {
   /** Required recipient. */

@@ -8,10 +8,10 @@
 
 import { sha256 } from "@noble/hashes/sha2.js";
 import { ed25519 } from "@noble/curves/ed25519.js";
-import { ValidationError } from "../errors/index";
-import type { Address } from "../types/index";
-import { addressToBytes, assertAddress, bytesToAddress } from "./address";
-import { concatBytes } from "./bytes";
+import { ValidationError } from "../errors/index.js";
+import type { Address } from "../types/index.js";
+import { addressToBytes, assertAddress, bytesToAddress } from "./address.js";
+import { concatBytes } from "./bytes.js";
 
 const PDA_MARKER = new TextEncoder().encode("ProgramDerivedAddress");
 

@@ -1,19 +1,19 @@
-import { SimulationError, ValidationError } from "../errors/index";
-import type { RpcClient } from "../rpc/RpcClient";
+import { SimulationError, ValidationError } from "../errors/index.js";
+import type { RpcClient } from "../rpc/RpcClient.js";
 import type {
   Address,
   Commitment,
   Signature,
   SimulationResult,
   TransactionStatusInfo,
-} from "../types/index";
-import { assertAddress } from "../utils/address";
-import { solToLamports } from "../utils/amount";
-import type { SolanaSigner } from "../wallet/Signer";
-import { confirmSignature, type ConfirmOptions } from "./confirm";
-import { InstructionBuilder } from "./InstructionBuilder";
-import { MessageCompiler } from "./MessageCompiler";
-import type { BuiltTransaction, CompiledMessage, Instruction, TransactionVersion } from "./types";
+} from "../types/index.js";
+import { assertAddress } from "../utils/address.js";
+import { solToLamports } from "../utils/amount.js";
+import type { SolanaSigner } from "../wallet/Signer.js";
+import { confirmSignature, type ConfirmOptions } from "./confirm.js";
+import { InstructionBuilder } from "./InstructionBuilder.js";
+import { MessageCompiler } from "./MessageCompiler.js";
+import type { BuiltTransaction, CompiledMessage, Instruction, TransactionVersion } from "./types.js";
 
 export interface BuildOptions {
   feePayer?: Address;

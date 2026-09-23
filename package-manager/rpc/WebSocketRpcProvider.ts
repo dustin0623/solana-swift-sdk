@@ -1,8 +1,8 @@
-import { SubscriptionError } from "../errors/index";
+import { SubscriptionError } from "../errors/index.js";
 import type {
   RpcSubscriptionHandle,
   SolanaRpcSubscriptionProvider,
-} from "./RpcProvider";
+} from "./RpcProvider.js";
 
 type WebSocketFactory = (url: string) => WebSocket;
 
