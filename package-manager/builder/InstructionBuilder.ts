@@ -126,6 +126,33 @@ export class InstructionBuilder {
     };
   }
 
+  /** SPL Token SyncNative: updates a wrapped-SOL account's amount after a lamport transfer. */
+  public static syncNative(account: Address, programId: Address = TOKEN_PROGRAM_ID): Instruction {
+    return {
+      programId,
+      keys: [{ address: assertAddress(account, "account"), isSigner: false, isWritable: true }],
+      data: Uint8Array.of(17),
+    };
+  }
+
+  /** SPL Token CloseAccount: closes a token account, sending its lamports to `destination`. */
+  public static closeTokenAccount(options: {
+    account: Address;
+    destination: Address;
+    owner: Address;
+    programId?: Address;
+  }): Instruction {
+    return {
+      programId: options.programId ?? TOKEN_PROGRAM_ID,
+      keys: [
+        { address: assertAddress(options.account, "account"), isSigner: false, isWritable: true },
+        { address: assertAddress(options.destination, "destination"), isSigner: false, isWritable: true },
+        { address: assertAddress(options.owner, "owner"), isSigner: true, isWritable: false },
+      ],
+      data: Uint8Array.of(9),
+    };
+  }
+
   /** Creates an associated token account; idempotent variant by default. */
   public static createAssociatedTokenAccount(options: {
     payer: Address;
