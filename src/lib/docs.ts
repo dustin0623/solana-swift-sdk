@@ -67,7 +67,7 @@ export const DOCS: DocSection[] = [
     summary: "mainnet, devnet, testnet, localnet and custom URLs.",
     blocks: [
       { code: `new SolanaClient({ network: "devnet" });\nnew SolanaClient({ network: "mainnet", rpc: { url: process.env.SOLANA_RPC_URL } });\nnew SolanaClient({ network: "localnet" }); // http://127.0.0.1:8899` },
-      { text: "Commitment is explicit: set defaultCommitment (\"processed\" | \"confirmed\" | \"finalized\", default \"confirmed\") and override per call where correctness depends on it." },
+      { text: "Omitting network defaults to mainnet — always set it explicitly in examples and tests. Commitment is explicit: set defaultCommitment (\"processed\" | \"confirmed\" | \"finalized\", default \"confirmed\") and override per call where correctness depends on it." },
     ],
   },
   {
@@ -427,7 +427,51 @@ await sdk.pools.best(mint); // find + rank in one call` },
     group: "Reference",
     summary: "Main exports.",
     blocks: [
-      { code: `SolanaClient, SolanaClientOptions\nRpcClient, HttpRpcProvider, WebSocketRpcProvider, MockRpcProvider\nReaderClient, AccountReader, BalanceReader, TransactionReader, BlockReader, SlotReader\nStreamEngine\nParserClient, TransactionParser, InstructionParser, TransferParser, TokenTransferParser, LogParser\nBuilderClient, TransactionBuilder, InstructionBuilder, simulateBuilt, assertSimulationSucceeded, confirmSignature\nPaymentClient, SolPaymentClient, SplPaymentClient, PaymentValidator\nTokenClient, MintClient, TransferClient, NftClient, ProgramClient\nKeypairSigner, WalletAdapter, WalletClient, type SolanaSigner\nfindProgramAddress, derivePda, createProgramAddress\nsolToLamports, lamportsToSol, toBaseUnits, fromBaseUnits, base58Encode, base58Decode\nRpcError, RpcHttpError, TransactionError, SimulationError, ValidationError,\nConfigurationError, ProviderError, SubscriptionError, UnsupportedOperationError\n\n// separate entry\nimport { HeliusRpcProvider } from "solanaxph-sdk/helius";` },
+      { code: `// Core
+SolanaClient, SolanaClientOptions, NETWORKS, endpointsFor
+RpcClient, HttpRpcProvider, WebSocketRpcProvider, MockRpcProvider, RpcClientOptions
+ReaderClient, AccountReader, BalanceReader, TransactionReader, BlockReader, SlotReader
+StreamEngine
+ParserClient, TransactionParser, InstructionParser, TransferParser, TokenTransferParser, LogParser
+BuilderClient, TransactionBuilder, InstructionBuilder, MessageCompiler
+createBuiltTransaction, signTransaction, simulateBuilt, assertSimulationSucceeded, confirmSignature
+PaymentClient, SolPaymentClient, SplPaymentClient, PaymentValidator
+TokenClient, MintClient, TransferClient, NftClient, ProgramClient
+KeypairSigner, WalletAdapter, WalletClient, verifySignature, type SolanaSigner
+findProgramAddress, derivePda, createProgramAddress, isOnCurve
+solToLamports, lamportsToSol, toBaseUnits, fromBaseUnits, LAMPORTS_PER_SOL
+base58Encode, base58Decode, isBase58, base64Encode, base64Decode
+SYSTEM_PROGRAM_ID, TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID,
+ASSOCIATED_TOKEN_PROGRAM_ID, MEMO_PROGRAM_ID, COMPUTE_BUDGET_PROGRAM_ID
+
+// Token infrastructure (Phase 1)
+TokenReader, TokenClient, NATIVE_SOL, WRAPPED_SOL_MINT
+metaplexMetadataAddress, decodeMetaplexMetadata, fetchOffChainMetadata
+exactAmount, parseTokenAmount, lamportsAmount
+
+// Token discovery (Phase 2)
+TokenDiscoveryClient, RpcTokenDiscoveryProvider, StaticTokenListProvider,
+discoveryCapabilities, NO_CAPABILITIES
+
+// Pool discovery (Phase 3)
+PoolClient, StaticPoolProvider, rankPools, poolLiquidityUsd,
+DEFAULT_POOL_RANKING_WEIGHTS, poolCapabilities, NO_POOL_CAPABILITIES
+
+// Swap quotes, transactions and execution (Phases 4–6)
+SwapClient, MAINNET_USDC_MINT, PoolQuoteProvider, constantProductQuote,
+minimumReceived, BPS_DENOMINATOR, SwapTransactionBuilder, assertQuoteShape,
+isSwapProvider, SwapExecutor, classifySolanaFailure
+
+// Trading flow (Phase 7)
+TradingClient
+
+// Errors
+SolanaSdkError, RpcError, RpcHttpError, TransactionError, SimulationError,
+ValidationError, ConfigurationError, ProviderError, SubscriptionError,
+UnsupportedOperationError, SwapExecutionError
+
+// Separate entry
+import { HeliusRpcProvider } from "solanaxph-sdk/helius";` },
     ],
   },
   {
@@ -437,6 +481,7 @@ await sdk.pools.best(mint); // find + rank in one call` },
     summary: "Testing with MockRpcProvider.",
     blocks: [
       { code: `import { SolanaClient, MockRpcProvider } from "solanaxph-sdk";\n\nconst solana = new SolanaClient({\n  provider: new MockRpcProvider({ getBalance: { context: { slot: 1 }, value: 42 } }),\n});\nawait solana.reader.balance(address); // { lamports: 42n, ... }` },
+      { text: "Reusable fixtures and demo trading data live in the SDK's test helpers: import { alice, bob, mint, successfulSolTransfer } from \"solanaxph-sdk/tests/fixtures\" — the same data the Playground uses, so examples stay reproducible." },
       { text: "Try the interactive examples in the Playground — including a live devnet transaction explorer." },
     ],
   },
