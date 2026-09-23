@@ -102,7 +102,7 @@ export class SolanaClient {
   }
 }
 
-function normalizeNetwork(value: NetworkType | Network | undefined): NetworkType {
+function normalizeNetwork(value: NetworkType | undefined): NetworkType {
   if (!value) return "mainnet";
   if (isNetwork(value)) return value;
   throw new ConfigurationError(
