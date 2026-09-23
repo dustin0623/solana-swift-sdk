@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { KeypairSigner } from "@solanaxph-sdk";
+import { RpcHealth } from "./RpcHealth";
 import {
   DEFAULT_CONFIG,
   buildClient,
@@ -96,6 +97,8 @@ export function ConfigCard() {
         {msg ? <p className="text-sm text-muted-foreground">{msg}</p> : null}
         {test ? <p className="font-mono text-sm">{test}</p> : null}
       </div>
+
+      <RpcHealth draft={draft} />
 
       <div className="rounded-xl border border-border bg-card p-6">
         <h2 className="mb-2 text-sm font-semibold">Active configuration (secrets masked)</h2>
