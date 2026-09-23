@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 
 type Listener = () => void;
 
@@ -19,14 +19,16 @@ export function toggleSidebar(currentlyVisible: boolean) {
 }
 
 export function useSidebarOpen() {
-  return useSyncExternalStore(
-    (listener) => {
-      listeners.add(listener);
-      return () => {
-        listeners.delete(listener);
-      };
-    },
-    () => open,
-    () => null,
-  );
+  const [value, setValue] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const listener = () => setValue(open);
+    listeners.add(listener);
+    listener();
+    return () => {
+      listeners.delete(listener);
+    };
+  }, []);
+
+  return value;
 }
