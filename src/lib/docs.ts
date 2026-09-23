@@ -212,6 +212,27 @@ sdk.swap.assertFresh(quote); // throws once expiresAt has passed` },
     ],
   },
   {
+    slug: "swap-transactions",
+    title: "Swap Transactions",
+    group: "Domain APIs",
+    summary: "Turning a quote into an unsigned transaction. The SDK never signs or broadcasts.",
+    blocks: [
+      { code: `const quote = await sdk.swap.quote({ input: "SOL", output: tokenMint, amount: 1_000_000_000n, slippageBps: 100 });
+const result = await sdk.swap.build({ quote, owner: walletAddress });
+
+result.transaction;      // UNSIGNED — sign with your wallet, then send yourself
+result.instructions;     // compute budget, ATA creation, wrap/unwrap, swap
+result.requiredSigners;  // addresses that must sign
+result.estimatedFees;    // network, priority, rent, wrapped SOL, totalSolRequired
+result.accounts;         // source, destination, recipient, created ATAs
+result.warnings;` },
+      { text: "Before building, the SDK checks the quote has not expired or been tampered with, the amount and mints, that the source account exists and holds enough, that the owner has enough SOL for fees, rent and wrapping, and re-quotes the pool to confirm the minimum output is still achievable." },
+      { text: "Missing output token accounts are detected and an idempotent create instruction is added, with its rent counted in estimatedFees. SOL input is wrapped into a temporary wSOL account that is closed afterwards; SOL output is unwrapped only when the SDK created the account, so pre-existing wSOL is never touched." },
+      { text: "Slippage protection is mandatory: the quote's minOutAmount is passed to the provider and must be encoded on-chain. Providers that cannot enforce a minimum output are refused. The recipient defaults to the owner and is never changed silently. A transaction that builds can still fail on-chain." },
+      { text: "Building needs a SwapProvider — a quote provider that also implements buildSwapInstructions() and declares enforcesMinOut. The built-in pool quote provider is quote-only, so register a protocol provider for your DEX before calling build()." },
+    ],
+  },
+  {
     slug: "pool-discovery",
     title: "Pool & Liquidity Discovery",
     group: "Domain APIs",
